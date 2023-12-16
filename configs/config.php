@@ -141,8 +141,8 @@ $config = new Config('myproject', dirname(__DIR__), [
           /*  'transport' => [
                 'scheme' => 'smtps',
                 'host' => 'smtp.gmail.com',
-                'username' => 'purnachandra.valluri@gmail.com',
-                'password' => 'M1yMaker',
+                'username' => 'provdigi@gmail.com',
+                'password' => '*',
                 'port' => 465,
                 'dsn' => 'native://default',
             ],*/
