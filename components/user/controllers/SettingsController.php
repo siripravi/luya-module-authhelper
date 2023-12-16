@@ -1,22 +1,23 @@
 <?php
+
 namespace app\components\user\controllers;
 
 use app\models\Profile;
 use app\models\UserAddress;
-use app\modules\user\controllers\SettingsController as BaseController;
+use Chandra\Yii2Account\controllers\SettingsController as BaseController;
 use yii\base\Exception;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
-use app\modules\user\Finder;
+use Chandra\Yii2Account\Finder;
 use yii\helpers\Url;
 use yii\web\ForbiddenHttpException;
 
 /**
  * @author Albert Gainutdinov <xalbert.einsteinx@gmail.com>
- * This controller adds some actions for app\modules\user\controllers\SettingsController
+ * This controller adds some actions for Chandra\Yii2Account\controllers\SettingsController
  * Its manage updating user settings (e.g. profile, email and password).
  *
- * @property \app\modules\user\Module $module
+ * @property \Chandra\Yii2Account\Module $module
  *
  */
 class SettingsController extends BaseController
@@ -61,15 +62,16 @@ class SettingsController extends BaseController
         ];
     }
 
-    public function actionAddresses() {
-
+    public function actionAddresses()
+    {
         $addresses = \Yii::$app->user->identity->profile->userAddresses;
         return $this->render('addresses', [
             'addresses' => $addresses
         ]);
     }
 
-    public function actionSaveAddress($id = null) {
+    public function actionSaveAddress($id = null)
+    {
         if (!empty($id)) {
             $address = UserAddress::findOne($id);
             if ($address->user_profile_id == \Yii::$app->user->identity->profile->id) {
@@ -77,16 +79,13 @@ class SettingsController extends BaseController
                     if ($address->validate()) {
                         $address->save();
                         return $this->redirect(Url::toRoute('/user/settings/addresses'));
-                    }
-                    else throw new Exception($address->errors);
+                    } else throw new Exception($address->errors);
                 }
                 return $this->render('save-address', [
                     'address' => $address
                 ]);
-            }
-            else throw new ForbiddenHttpException();
-        }
-        else {
+            } else throw new ForbiddenHttpException();
+        } else {
             $address = new UserAddress();
             if ($address->load(\Yii::$app->request->post())) {
                 $address->user_profile_id = \Yii::$app->user->identity->profile->id;
@@ -101,16 +100,15 @@ class SettingsController extends BaseController
         }
     }
 
-    public function actionDeleteAddress($id) {
+    public function actionDeleteAddress($id)
+    {
         if (!empty($id)) {
             $address = UserAddress::findOne($id);
             if ($address->user_profile_id == \Yii::$app->user->identity->profile->id) {
                 $address->delete();
                 return $this->redirect('addresses');
-            }
-            else throw new ForbiddenHttpException('Such address does not exists or it is not your address.');
-        }
-        else throw new ForbiddenHttpException('Id can not be empty.');
+            } else throw new ForbiddenHttpException('Such address does not exists or it is not your address.');
+        } else throw new ForbiddenHttpException('Id can not be empty.');
     }
 
     /**
@@ -120,6 +118,8 @@ class SettingsController extends BaseController
      */
     public function actionProfile()
     {
+
+        
         $model = $this->finder->findProfileById(\Yii::$app->user->identity->getId());
 
         if ($model == null) {

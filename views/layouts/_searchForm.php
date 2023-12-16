@@ -5,6 +5,7 @@ use kartik\typeahead\Typeahead;
 use yii\web\JsExpression;
 use yii\bootstrap5\ActiveForm;
 ?>
+
 <form action="<?= Url::to(['/search']) ?>">
     <div class="form-group">
         <div class="input-group">

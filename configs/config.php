@@ -8,10 +8,11 @@ $config = new Config('myproject', dirname(__DIR__), [
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
-    ],
+    ],  
+   // 'bootstrap' => ['user'],
     'modules' => [
         'user' => [
-            'class' => 'app\modules\user\Module',
+            'class' => 'Chandra\Yii2Account\Module',
             'modelMap' => [
                 'RegistrationForm' => app\models\RegistrationForm::class,
                 'RecoveryForm' => app\models\RecoveryForm::class,
@@ -23,11 +24,22 @@ $config = new Config('myproject', dirname(__DIR__), [
             'controllerMap' => [
                 'registration' => app\components\user\controllers\RegistrationController::class,
                 'settings' => app\components\user\controllers\SettingsController::class,
-                'security' => app\components\user\controllers\SecurityController::class,
+                'security' => @app\components\user\controllers\SecurityController::class,
                 'recovery' => app\components\user\controllers\RecoveryController::class
             ],
+            'mailer' => [
+                'viewPath' => '@app/views/user/mail',
+                'sender'                => 'no-reply@myhost.com', // or ['no-reply@myhost.com' => 'Sender name']
+                'welcomeSubject'        => 'Welcome subject',
+                'confirmationSubject'   => 'Confirmation subject',
+                'reconfirmationSubject' => 'Email change subject',
+                'recoverySubject'       => 'Recovery subject',
+        ],
            // 'as frontend' => app\modules\user\filters\FrontendFilter::class,
            // 'enableFlashMessages' => false
+        ],
+        'forms' => [
+            'class' => 'luya\forms\Module',
         ],
         // Admin module for the `cms` module.
         'cmsadmin' => [
@@ -53,7 +65,7 @@ $config = new Config('myproject', dirname(__DIR__), [
         'catalogadmin' => 'siripravi\catalog\admin\Module',
         'gallery' => [
             'class' => 'luya\gallery\frontend\Module',
-            'useAppViewPath' => false, // When enabled the views will be looked up in the @app/views folder, otherwise the views shipped with the module will be used.
+            'useAppViewPath' => true, // When enabled the views will be looked up in the @app/views folder, otherwise the views shipped with the module will be used.
         ],
         'galleryadmin' => 'luya\gallery\admin\Module',
         'cart' => 'app\modules\cart\frontend\Module',
@@ -78,14 +90,15 @@ $config = new Config('myproject', dirname(__DIR__), [
                 '<slug:[0-9a-z\-]+>.html' => 'site/page',               
 			],
         ],*/
+   
+        'db' => [
+            'class' => 'yii\db\Connection',
+            'charset' => 'utf8',
+        ],
         'request' => [
             'enableCookieValidation' => true,
             'cookieValidationKey' => 'I-mmzHGFYAx9EnbueCBRo4W4HQBKHA_-',
             'enableCsrfValidation' => false,
-        ],
-        'db' => [
-            'class' => 'yii\db\Connection',
-            'charset' => 'utf8',
         ],
         'user' => [       // 'class'=>'',     
                 'identityClass' => app\models\User::class,
@@ -111,7 +124,7 @@ $config = new Config('myproject', dirname(__DIR__), [
                   //  'js' => [],
                 ],
                 'yii\bootstrap5\BootstrapAsset' => [
-                   // 'css' => [],
+                    'css' => [],
                 ],
                 /*'yii\web\JqueryAsset' => [
                     'sourcePath' => null,
@@ -121,6 +134,24 @@ $config = new Config('myproject', dirname(__DIR__), [
                     ],  
                 ],*/
             ],
+        ],
+
+        'mailer' => [
+            'class' => \yii\symfonymailer\Mailer::class,
+          /*  'transport' => [
+                'scheme' => 'smtps',
+                'host' => 'smtp.gmail.com',
+                'username' => 'purnachandra.valluri@gmail.com',
+                'password' => 'M1yMaker',
+                'port' => 465,
+                'dsn' => 'native://default',
+            ],*/
+            'viewPath' => '@app/mail',
+            // send all mails to a file by default.
+            'useFileTransport' => true,
+           /* 'transport' => [
+                'dsn' => 'smtp://purnachandra.valluri@gmail.com:M1yMaker@smtp.gmail.com:465',
+            ],*/
         ],
         /*
          * Add your smtp connection to the mail component to send mails (which is required for secure login), you can test your
@@ -136,8 +167,8 @@ $config = new Config('myproject', dirname(__DIR__), [
         ],
         /*
          * The composition component handles your languages and they way your urls will look like. The composition components will
-         * automatically add the language prefix which is defined in `default` to your url (the language part in the url  e.g. "yourdomain.com/en/homepage").
-         *
+         * automatically add the language prefix  is defined in `default` to your url (the language part in the url  e.g. "yourdomain.com/en/homepage").
+         *which
          * hidden: (boolean) If this website is not multi lingual you can hide the composition, other whise you have to enable this.
          * default: (array) Contains the default setup for the current language, this must match your language system configuration.
          */

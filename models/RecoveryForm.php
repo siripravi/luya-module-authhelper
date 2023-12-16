@@ -12,8 +12,8 @@
  namespace app\models;
 
 use app\models\User;
-use app\modules\user\Finder;
-use app\components\user\UserMailer as Mailer;
+use Chandra\Yii2Account\Finder;
+use Chandra\Yii2Account\Mailer;
 use yii\base\Model;
 
 /**
@@ -110,7 +110,7 @@ class RecoveryForm extends Model
         if (!empty($user)) {
             /** @var Token $token */
             $token = \Yii::createObject([
-                'class' => Token::className(),
+                'class' => Token::class(),
                 'user_id' => $user->id,
                 'type' => Token::TYPE_RECOVERY,
             ]);

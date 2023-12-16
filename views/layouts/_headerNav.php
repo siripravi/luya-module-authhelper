@@ -1,4 +1,5 @@
 <?php
+
 use yii\helpers\Html;
 use yii\helpers\Url;
 use app\modules\cart\widgets\CartWidget;
@@ -12,82 +13,119 @@ use yii\bootstrap5\Popover;
 $menuItems = []; //<iconify-icon icon="mdi:user-outline" style="color: #123;" width="20" rotate="0deg"></iconify-icon>
 
 ?>
-<!-- Top Nav -->
-<!--<div class="col-12 bg-white pt-4">
-    <div class="row">
-        <div class="col-lg-auto">
-            <div class="site-logo text-center text-lg-left">
-                <a href="index.html">Nyxta Shop</a>
-            </div>
-        </div>
-        <div class="col-lg-5 mx-auto mt-6 mt-lg-0">
-            <= $this->render('_searchForm');  ?>
-            
-        </div>
-        <div class="col-lg-auto text-center text-lg-left header-item-holder d-inline-flex ps-4">
-            <= CartIconWidget::widget(); ?>
-        </div>
-    </div>
-</div>  -->
-
 <!-- Navbar begins  -->
 <?php
 NavBar::begin([
     //'brandLabel' => '<span class="gaozhan-logo">'.Html::img("/image/site/nyxta.png",["style"=>"max-height: 80%; padding: 0;position:relative;"]).'</span>',
-    // 'brandUrl' => Yii::$app->homeUrl,
+    'brandLabel'  => '<h1 class="text-primary display-6">Cake Zone</h1>',
+    'brandUrl' => Yii::$app->homeUrl,
     'options' => [
-        'class' => 'navbar navbar-expand-lg bg-dark navbar-dark shadow-sm py-3 py-lg-0 px-3 px-lg-0',
-        //'style'=>"background-color: #e3f2fd;"
+        'class' => 'navbar navbar-light bg-white navbar-expand-md',
+        // 'style'=>"background-color: #6ace32;"
 
     ],
 ]);  ?>
 
+<?php
+$menuItems = [
+    [
+        'label' => Yii::t('app', 'Home'),
+        'url' => ['/'],
+        'active' => in_array(Yii::$app->controller->id, ['site']) && in_array(Yii::$app->controller->action->id, ['index']),
+        'linkOptions' => [
+            'class' => in_array(Yii::$app->controller->id, ['site']) && in_array(Yii::$app->controller->action->id, ['index']) ? 'nav-item nav-link text-white ml-3' : 'nav-item nav-link text-white',
+        ],
+    ],
+    [
+        'label' => Yii::t('app', 'Browse'),
+        //'url' => ['/category/index'],
+        'url' => ["#"], //nav-link dropdown-toggle show 
+        'options' => ['class' => 'has-megamenu'],
+        //class="dropdown-toggle" data-toggle="dropdown"
+        'linkOptions' => ['class' => 'dropdown-toggle', 'data-bs-auto-close' => 'outside', 'data-bs-toggle' => 'dropdown'],
+        // 'active' => in_array(Yii::$app->controller->id, ['category', 'product']),
+        'items' => [
+            $this->render("_mega")
+        ]
+    ],
+    ['label' => Yii::t('app', 'Blog'), 'url' => ['/blog']]
 
-<div class="container-fluid">
-    <?php
-    $menuItems = [
-        [
-            'label' => Yii::t('app', 'Home'),
-            'url' => ['/'],
-            'active' => in_array(Yii::$app->controller->id, ['site']) && in_array(Yii::$app->controller->action->id, ['index']),
-            'linkOptions' => [
-                'class' => in_array(Yii::$app->controller->id, ['site']) && in_array(Yii::$app->controller->action->id, ['index']) ? 'nav-item nav-link text-white ml-3' : 'nav-item nav-link text-white',
-            ],
-        ],
-        [
-            'label' => Yii::t('app', 'Browse'),
-            //'url' => ['/category/index'],
-            'url' => ["#"], //nav-link dropdown-toggle show 
-            'options' => ['class' => 'has-megamenu'],
-            //class="dropdown-toggle" data-toggle="dropdown"
-            'linkOptions' => ['class' => 'dropdown-toggle', 'data-bs-auto-close' => 'outside', 'data-bs-toggle' => 'dropdown'],
-            // 'active' => in_array(Yii::$app->controller->id, ['category', 'product']),
-            'items' => [
-                $this->render("_mega")
-            ]
-        ],
-        ['label' => Yii::t('app', 'Blog'), 'url' => ['/blog']],
-        
+];
+$userItems = [];
+if (Yii::$app->user->isGuest) {
+    $userItems[] = [
+        'label' =>  Html::tag(
+            'span',
+            '<i class="fas fa-user fa-2x"></i>',
+            ["class" => "d-inline-block", "tabindex" => "0", "data-bs-toggle" => "popover", "data-bs-trigger" => "hover focus", "data-bs-content" => "click to login!"]
+        ),
+        'encode' => false,
+        'url' => ['/user/login'],
+        'linkOptions' => ['alt' => Yii::t('app', 'Login'), 'class' => ''],
     ];
-    ?>
-    <div class="col-auto me-auto">
-        <?= Nav::widget([
-            'options' => ['class' => "navbar-nav ms-auto mx-lg-auto py-0"],
-            'items' => $menuItems,
-        ]); ?>
-       
-    </div>
-   
-</div> <!-- container-fluid -->
-<?php NavBar::end();   ?>
+} else {
+    $userItems[] = [
+        'label' => Yii::t('app', 'Manage users'),
+        'url' => ['/user/index'],
+        'visible' => \Yii::$app->user->can('manage_users'),
+        'items' => []
+    ];
+    $userItems[] = [
+        'label' => Html::img(
+            \Yii::$app->user->identity->getAvatarImage(),
+            ['alt' => Yii::$app->user->identity->username, 'class' => 'rounded-circle border-2', 'width' => 38]
+        ),
+        'encode' => false,
+        'linkOptions' => ['alt' => Yii::t('app', 'Welcome'), 'data-bs-title' => Yii::t('app', 'Welcome'), 'class' => ''],
+        'items' => [
+            [
+                'label' => Html::tag('span', Yii::$app->user->identity->username),
+                'url' => ['/user/settings/profile'],
+                'encode' => false,
+            ],
+            [
+                'label' => Html::tag('span', Yii::t('app', 'Account Settings')),
+                'encode' => false,
+                'url' => ['/user/settings/account'],
+                'linkOptions' => ['alt' => Yii::t('app', 'Account Settings'), 'title' => Yii::t('app', 'Account Settings')],
+            ],
+            [
+                'label' => Html::tag('span', Yii::t('app', 'Addresses')),
+                'encode' => false,
+                'url' => ['/user/settings/addresses'],
+                'linkOptions' => ['alt' => Yii::t('app', 'Addresses'), 'title' => Yii::t('app', 'Addresses')],
+            ],
+            [
+                'label' => Html::tag('span', Yii::t('app', 'Logout')),
+                'url' => ['/user/logout'],
+                'encode' => false,
+                'linkOptions' => [
+                    'data-method' => 'post',
+                    'alt' => Yii::t('app', 'Logout'),
+                    'title' => Yii::t('app', 'Logout'),
+                ],
+            ]
+        ]
+    ];
+}
 
-<!-- Navbar ends -->
-<!--php if (Yii::$app->controller->id !== 'site' || Yii::$app->controller->action->id !== 'index') : ?>
-    <div class="p-5 bg-primary bs-cover" style="background-image: url(<= '/image/site/Banner_1.webp'; ?>);">
-        <div class="container text-center">
-            <span class="display-5 px-3 bg-white rounded shadow">Bracelets</span>
-        </div>
-    </div>
-<php endif;  -->
-<!--<video class="lozad" preload="auto" autoplay="" muted="" loop="" playsinline="" data-poster="https://www.parisbaguette.com/wp-content/themes/parisbaguette/assets/images/blank.gif" poster="https://www.parisbaguette.com/wp-content/themes/parisbaguette/assets/images/blank.gif" data-loaded="true">
-      <source type="video/mp4" data-src="https://www.parisbaguette.com/wp-content/uploads/FRANCHISE_hero.mp4" src="https://www.parisbaguette.com/wp-content/uploads/FRANCHISE_hero.mp4">    </video>  -->
+?>
+<div class="col-auto me-auto">
+    <?= Nav::widget([
+        'options' => ['class' => "navbar-nav ms-auto mx-lg-auto py-0"],
+        'items' => $menuItems,
+    ]); ?>
+</div>
+<div class="d-flex m-3 me-0">
+    <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
+    <a href="#" class="position-relative me-4 my-auto">
+        <i class="fa fa-shopping-bag fa-2x"></i>
+        <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
+    </a>
+    <?= Nav::widget([
+        'options' => ['class' => "navbar-nav ms-auto mx-lg-auto py-0"],
+        'items' => $userItems,
+    ]); ?>
+</div>
+
+<?php NavBar::end();   ?>

@@ -1,9 +1,10 @@
 <?php
+
 namespace app\components\user;
 
 use app\models\Token;
 use app\models\User;
-use bl\emailTemplates\data\Template;
+
 use bl\multilang\entities\Language;
 use Yii;
 use yii\base\Component;
@@ -17,7 +18,7 @@ class UserMailer extends Component
 {
 
     /** @var string */
-    public $viewPath = '@dektrium/user/views/mail';
+    public $viewPath = '@app/views/user/mail';
 
     /** @var string|array Default: `Yii::$app->params['adminEmail']` OR `no-reply@example.com` */
     public $sender;
@@ -31,7 +32,7 @@ class UserMailer extends Component
     /** @var string */
     protected $recoverySubject;
 
-    /** @var \app\modules\user\Module */
+    /** @var \Chandra\Yii2Account\Module */
     protected $module;
 
     /**

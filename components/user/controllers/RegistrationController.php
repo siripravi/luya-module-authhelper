@@ -4,11 +4,13 @@ namespace app\components\user\controllers;
 use app\models\Profile;
 use app\models\RegistrationForm;
 use app\models\User;
+use app\models\Token;
 use app\components\events\UserRegistrationEvent;
-use app\modules\user\Finder;
-use app\modules\user\models\ResendForm;
-use app\modules\user\traits\AjaxValidationTrait;
-use app\modules\user\traits\EventTrait;
+use Chandra\Yii2Account\Finder;
+
+use Chandra\Yii2Account\models\ResendForm;
+use Chandra\Yii2Account\traits\AjaxValidationTrait;
+use Chandra\Yii2Account\traits\EventTrait;
 use yii\base\Exception;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -18,7 +20,7 @@ use yii\web\NotFoundHttpException;
  * RegistrationController is responsible for all registration process, which includes registration of a new account,
  * resending confirmation tokens, email confirmation and registration via social networks.
  *
- * @property \app\modules\user\Module $module
+ * @property \Chandra\Yii2Account\Module $module
  * @method StaticPageBehavior registerStaticSeoData
  *
  * @author Dmitry Erofeev <dmeroff@gmail.com>
@@ -30,49 +32,49 @@ class RegistrationController extends Controller
 
     /**
      * Event is triggered after creating RegistrationForm class.
-     * Triggered with \app\modules\user\events\FormEvent.
+     * Triggered with \Chandra\Yii2Account\events\FormEvent.
      */
     const EVENT_BEFORE_REGISTER = 'beforeRegister';
 
     /**
      * Event is triggered after successful registration.
-     * Triggered with \app\modules\user\events\FormEvent.
+     * Triggered with \Chandra\Yii2Account\events\FormEvent.
      */
     const EVENT_AFTER_REGISTER = 'afterRegister';
 
     /**
      * Event is triggered before connecting user to social account.
-     * Triggered with \app\modules\user\events\UserEvent.
+     * Triggered with \Chandra\Yii2Account\events\UserEvent.
      */
     const EVENT_BEFORE_CONNECT = 'beforeConnect';
 
     /**
      * Event is triggered after connecting user to social account.
-     * Triggered with \app\modules\user\events\UserEvent.
+     * Triggered with \Chandra\Yii2Account\events\UserEvent.
      */
     const EVENT_AFTER_CONNECT = 'afterConnect';
 
     /**
      * Event is triggered before confirming user.
-     * Triggered with \app\modules\user\events\UserEvent.
+     * Triggered with \Chandra\Yii2Account\events\UserEvent.
      */
     const EVENT_BEFORE_CONFIRM = 'beforeConfirm';
 
     /**
      * Event is triggered before confirming user.
-     * Triggered with \app\modules\user\events\UserEvent.
+     * Triggered with \Chandra\Yii2Account\events\UserEvent.
      */
     const EVENT_AFTER_CONFIRM = 'afterConfirm';
 
     /**
      * Event is triggered after creating ResendForm class.
-     * Triggered with \app\modules\user\events\FormEvent.
+     * Triggered with \Chandra\Yii2Account\events\FormEvent.
      */
     const EVENT_BEFORE_RESEND = 'beforeResend';
 
     /**
      * Event is triggered after successful resending of confirmation email.
-     * Triggered with \app\modules\user\events\FormEvent.
+     * Triggered with \Chandra\Yii2Account\events\FormEvent.
      */
     const EVENT_AFTER_RESEND = 'afterResend';
 
@@ -88,6 +90,8 @@ class RegistrationController extends Controller
     public function __construct($id, $module, Finder $finder, $config = [])
     {
         $this->finder = $finder;
+        $this->finder->userQuery = User::find();
+        $this->finder->tokenQuery = Token::find();
         parent::__construct($id, $module, $config);
     }
 
@@ -133,9 +137,9 @@ class RegistrationController extends Controller
             $post = \Yii::$app->request->post();  
             if ($user->load($post)) {  
                 $user->username = $user->email;
-                if ($profile->load($post)) { 
+                if ($profile->load($post)) {
                     if ($profile->user_id = $user->register()) {
-
+                       
                         if ($profile->validate()) {
                             $profile->save();
 
@@ -151,10 +155,7 @@ class RegistrationController extends Controller
                         }
                     }
                 }
-                else{
-                     print_r($profile->attributes);
-                     print_r($post);die;
-                }     
+                    
                 throw new Exception(\Yii::t('user', 'Registration error'));
             }
         }
@@ -184,7 +185,7 @@ class RegistrationController extends Controller
 
         /** @var User $user */
         $user = \Yii::createObject([
-            'class'    => User::className(),
+            'class'    => User::class,
             'scenario' => 'connect',
             'email'    => $account->email,
         ]);
@@ -216,9 +217,10 @@ class RegistrationController extends Controller
      * @return string
      * @throws \yii\web\HttpException
      */
-    public function actionConfirm($id, $code, $return)
+    public function actionConfirm($id, $code, $return='/user/security/login')
     {
-        $user = $this->finder->findUserById($id);
+        
+       $user = $this->finder->findUserById($id);
 
         if ($user === null || $this->module->enableConfirmation == false) {
             throw new NotFoundHttpException();
@@ -227,7 +229,7 @@ class RegistrationController extends Controller
         $event = $this->getUserEvent($user);
 
         $this->trigger(self::EVENT_BEFORE_CONFIRM, $event);
-
+        $user->finder = $this->finder;
         $user->attemptConfirmation($code);
 
         $this->trigger(self::EVENT_AFTER_CONFIRM, new UserRegistrationEvent([
@@ -239,7 +241,7 @@ class RegistrationController extends Controller
             return $this->redirect($return);
         }
 
-        return $this->render('/message', [
+        return $this->render('message', [
             'title'  => \Yii::t('user', 'Account confirmation'),
             'module' => $this->module,
         ]);
@@ -256,9 +258,9 @@ class RegistrationController extends Controller
         if ($this->module->enableConfirmation == false) {
             throw new NotFoundHttpException();
         }
-
-        /** @var ResendForm $model */
-        $model = \Yii::createObject(ResendForm::className());
+      
+        $model = \Yii::createObject(ResendForm::class,['finder' => $this->finder]);
+      
         $event = $this->getFormEvent($model);
 
         $this->trigger(self::EVENT_BEFORE_RESEND, $event);
@@ -268,7 +270,7 @@ class RegistrationController extends Controller
         if ($model->load(\Yii::$app->request->post()) && $model->resend()) {
             $this->trigger(self::EVENT_AFTER_RESEND, $event);
 
-            return $this->render('/message', [
+            return $this->render('message', [
                 'title'  => \Yii::t('user', 'A new confirmation link has been sent'),
                 'module' => $this->module,
             ]);
@@ -277,5 +279,5 @@ class RegistrationController extends Controller
         return $this->render('resend', [
             'model' => $model,
         ]);
-    }
+    }  
 }

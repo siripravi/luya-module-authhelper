@@ -10,6 +10,7 @@ use app\modules\cart\models\OrderForm;
 use app\modules\cart\widgets\CartWidget;
 use luya\admin\filters\MediumCrop;
 use siripravi\catalog\models\Article;
+use app\models\UserAddress;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -222,8 +223,32 @@ class BagController extends \luya\web\Controller
         return Cart::setCart($cart);
     }
 
-    public function actionAddress(){
-        return $this->renderLayout('customer_address');
+    public function actionAddress($id = null){
+        if (!empty($id)) {
+            $address = UserAddress::findOne($id);
+            if ($address->user_profile_id == \Yii::$app->user->identity->profile->id) {
+                if ($address->load(\Yii::$app->request->post())) {
+                    if ($address->validate()) {
+                        $address->save();
+                        return $this->redirect(Url::toRoute('/cart/bag/address'));
+                    } else throw new Exception($address->errors);
+                }
+                return $this->render('save-address', [
+                    'address' => $address
+                ]);
+            } else throw new ForbiddenHttpException();
+        } else {
+            $address = new UserAddress();
+            if ($address->load(\Yii::$app->request->post())) {
+                $address->user_profile_id = \Yii::$app->user->identity->profile->id;
+                if ($address->validate()) {
+                    $address->save();
+                    return $this->redirect('addresses');
+                }
+            }
+            return $this->renderLayout('customer_address',['address' => $address]);
+        }
+        
     }
     public function actionCheckout(){
         return $this->renderLayout('checkout');

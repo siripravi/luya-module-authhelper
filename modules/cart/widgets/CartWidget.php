@@ -41,8 +41,8 @@ class CartWidget extends Widget
                      'id',
                     function($element){
                      return [$element->name,
-                       // $element->getImage()->applyFilter(MediumCrop::identifier())->source
-                        Yii::$app->storage->getImage($element->image_id)->applyFilter(\app\filters\ThumbFilter::identifier())->source
+                        $element->getImage()->applyFilter(MediumCrop::identifier())->source
+                       // Yii::$app->storage->getImage($element->image_id)->applyFilter(\app\filters\MediumFilter::identifier())->source
                     ];
                     }
                     );

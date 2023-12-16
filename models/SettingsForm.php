@@ -1,10 +1,10 @@
 <?php
 namespace app\models;
 use app\models\User;
-use app\modules\user\helpers\Password;
-use app\modules\user\Mailer;
-use app\modules\user\Module;
-use app\modules\user\traits\ModuleTrait;
+use Chandra\Yii2Account\helpers\Password;
+use Chandra\Yii2Account\Mailer;
+use Chandra\Yii2Account\Module;
+use Chandra\Yii2Account\traits\ModuleTrait;
 use Yii;
 use yii\base\Model;
 
@@ -159,7 +159,7 @@ class SettingsForm extends Model
         $this->user->unconfirmed_email = $this->email;
         /** @var Token $token */
         $token = Yii::createObject([
-            'class'   => Token::className(),
+            'class'   => Token::class,
             'user_id' => $this->user->id,
             'type'    => Token::TYPE_CONFIRM_NEW_EMAIL,
         ]);
@@ -181,7 +181,7 @@ class SettingsForm extends Model
         $this->defaultEmailChange();
         /** @var Token $token */
         $token = Yii::createObject([
-            'class'   => Token::className(),
+            'class'   => Token::class,
             'user_id' => $this->user->id,
             'type'    => Token::TYPE_CONFIRM_OLD_EMAIL,
         ]);

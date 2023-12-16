@@ -11,8 +11,8 @@
 
 namespace app\components\events;
 
-use app\components\user\models\RecoveryForm;
-use app\components\user\models\Token;
+use app\models\RecoveryForm;
+use app\models\Token;
 use yii\base\Event;
 
 /**

@@ -1,11 +1,10 @@
 <?php
 namespace app\models;
-use yii;
+
 use app\models\Token;
-use app\components\user\UserMailer;
-use app\entities\PartnerRequest;
-use app\modules\user\helpers\Password;
-use app\modules\user\models\User as BaseModel;
+
+use Chandra\Yii2Account\helpers\Password;
+use Chandra\Yii2Account\models\User as BaseModel;
 
 /**
  * @author Albert Gainutdinov <xalbert.einsteinx@gmail.com>
@@ -14,6 +13,7 @@ use app\modules\user\models\User as BaseModel;
  */
 class User extends BaseModel
 {
+    //public $mailer;
 
     /** @inheritdoc */
     public function afterSave($insert, $changedAttributes)
@@ -78,7 +78,7 @@ class User extends BaseModel
      * @param null|string $return
      */
     public function register($return = null)
-    {    
+    {
         if ($this->getIsNewRecord() == false) {
             throw new \RuntimeException('Calling "' . __CLASS__ . '::' . __METHOD__ . '" on existing user');
         }
@@ -89,9 +89,9 @@ class User extends BaseModel
             $this->confirmed_at = $this->module->enableConfirmation ? null : time();
             $this->password     = $this->module->enableGeneratingPassword ? Password::generate(8) : $this->password;
 
-            $this->trigger(self::BEFORE_CREATE);
+            $this->trigger(self::BEFORE_REGISTER);
 
-            if (!$this->save()) {  
+            if (!$this->save()) {
                 $transaction->rollBack();
                 return false;
             }
@@ -103,13 +103,13 @@ class User extends BaseModel
                 $token->link('user', $this);
             }
 
-       //     $this->mailer->sendWelcomeMessage($this, isset($token) ? $token : null);
-            $this->trigger(self::AFTER_CREATE);
+            $this->mailer->sendWelcomeMessage($this, isset($token) ? $token : null);
+            $this->trigger(self::AFTER_REGISTER);
 
             $transaction->commit();
 
             return $this->id;
-        } catch (\Exception $e) {   //echo $e->getMessage();die;
+        } catch (\Exception $e) {  echo $e->getMessage(); die;
             $transaction->rollBack();
             \Yii::warning($e->getMessage());
             return false;
@@ -130,13 +130,6 @@ class User extends BaseModel
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProfile()
-    {
-        return $this->hasOne(get_class(\Yii::createObject(Profile::class)), ['user_id' => 'id']);
-    }
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getUserGroup()
     {
         return $this->hasOne(UserGroup::class, ['id' => 'user_group_id']);
@@ -148,17 +141,39 @@ class User extends BaseModel
      */
     protected function getMailer()
     {
-        return \Yii::$container->get(UserMailer::class);
+        return \Yii::$container->get(\Chandra\Yii2Account\Mailer::class);
+        //return \Yii::$app->mailer;
     }
 
     public function getUsername()
     {
         return $this->email;
     }
-
+    
     public function getAvatarImage()
     {
-        return Yii::getAlias('@web/img/avatar/') . $this->id . '/' . $this->profile->avatar;
+        return \Yii::getAlias('@web/img/avatar/') . $this->id . '/' . $this->profile->avatar;
     }
+
+     /**
+     * Confirms the user by setting 'confirmed_at' field to current time.
+     */
+    public function confirm()
+    {
+        $this->trigger(self::BEFORE_CONFIRM);
+        $result = (bool) $this->updateAttributes(['confirmed_at' => time()]);
+        $this->trigger(self::AFTER_CONFIRM);
+        return $result;
+    }
+
+     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProfile()
+    {
+        return $this->hasOne(get_class(\Yii::createObject(Profile::class)), ['user_id' => 'id']);
+    }
+    
+
 
 }

@@ -4,6 +4,7 @@ use app\widgets\OrderScheme;
 
 use yii\helpers\Html;
 use yii\bootstrap5\Breadcrumbs;
+
 /**
  * @var $this \luya\web\View
  */
@@ -24,48 +25,59 @@ $this->beginPage();
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Oswald:wght@500;600;700&family=Pacifico&display=swap" rel="stylesheet">
-    <link rel="preload" href="https://assets.winni.in/coreast/constant/font/roboto/roboto-700.woff2" as="font" type="font/woff2" crossorigin>
-        <link rel="preload" href="https://assets.winni.in/coreast/constant/font/roboto/roboto-400.woff2" as="font" type="font/woff2" crossorigin>
-    <!-- Icon Font Stylesheet -->
+ 
+   <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <?php $this->head() ?>
     <style>
         .slick-slide img {
-            width: 100%;
+            /*width: 100%;*/
         }
     </style>
 </head>
 
-<body class="container-fluid">
+<body>
+    <!-- Spinner Start -->
+    <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
+        <div class="spinner-grow text-primary" role="status"></div>
+    </div>
+    <!-- Spinner End -->
+    <!--tobbar  -->
+    <div class="container-fluid  fixed-top">
+        <div class="container topbar bg-primary d-none d-lg-block">
+            <div class="d-flex justify-content-between">
+                <div class="top-info ps-2">
+                <small class="me-3"><i data-feather="phone-call" class="icon-feather icon-phone-call me-2 text-secondary"></i><a href="#" class="text-white">(+91)12345 12345</a></small>
+                    <small class="me-3"><i data-feather="map-pin" class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">123 Street, New York</a></small>
+                    <small class="me-3"><i data-feather="mail" class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">Email@Example.com</a></small>
+                </div>
+                <div class="top-link pe-2">
+                    <a href="#" class="text-white"><small class="text-white mx-2">Privacy Policy</small>/</a>
+                    <a href="#" class="text-white"><small class="text-white mx-2">Terms of Use</small>/</a>
+                    <a href="#" class="text-white"><small class="text-white ms-2">Sales and Refunds</small></a>
+                </div>
+            </div>
+        </div>
+        <div class="container px-0">
+            <?php echo $this->render('_headerNav'); ?>
+            
+        </div>
+    </div>
+    <?= $this->render('_searchForm'); ?>
+   
+    
     <div class="row min-vh-100">
         <?php $this->beginBody() ?>
         <div class="col-12">
-            <?php echo $this->render('_topNav'); ?>
+            <!--php echo $this->render('_topNav'); -->
             <header class="bg-primary py-2">
-                <?php echo $this->render('_headerNav'); ?>
-                <div class="container px-4 px-lg-5 my-5">                                  
-                    <h1 class="bg-white"><?php
-                            if (isset($this->params['breadcrumbs'])) {
-                                echo Html::tag(
-                                    'div',
-                                    Breadcrumbs::widget([
-                                        'links' => $this->params['breadcrumbs'],
-                                        'homeLink' => [
-                                            'label' => Yii::$app->name,
-                                            'url' => Yii::$app->homeUrl,
-                                        ],
-                                    ]),
-                                    [
-                                       'class' => 'display-4 fw-bolder'
-                                    ]
-                                );
-                            }
-                            ?>
-                           </h1>
-                        <p class="lead fw-normal text-white-50 mb-0"></p>                   
+
+                <div class="container px-4 px-lg-5 my-5">
+                    <h1 class="bg-white">
+                    </h1>
+                    <p class="lead fw-normal text-white-50 mb-0"></p>
                 </div>
             </header>
         </div>
@@ -75,8 +87,8 @@ $this->beginPage();
                 <php foreach (Yii::$app->menu->current->teardown as $item) : ?>
                     <li><a href="<= $item->link; ?>"><= $item->title; ?></a></li>
                 <php endforeach; ?>
-            </ol>-->        
-           
+            </ol>-->
+
             <main>
                 <?= $content; ?>
             </main>

@@ -11,7 +11,7 @@
 
 namespace app\models;
 use app\models\User;
-use app\modules\user\traits\ModuleTrait;
+use Chandra\Yii2Account\traits\ModuleTrait;
 use Yii;
 use yii\base\Model;
 
@@ -111,6 +111,7 @@ class RegistrationForm extends Model
      */
     public function register()
     {
+        
         if (!$this->validate()) {
             return false;
         }

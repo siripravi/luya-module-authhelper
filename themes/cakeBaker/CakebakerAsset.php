@@ -7,7 +7,8 @@ class CakebakerAsset extends Asset
 {
     public $sourcePath = '@activeTheme/dist';
     public $css = [  
-       // 'bootstrap.min.css',    
+        'flaticon.css',
+        'bootstrap.min.css',    
         'style.css'
     ];
 
@@ -21,6 +22,7 @@ class CakebakerAsset extends Asset
     ];
     
     public $depends = [
+        'basepodapps\feathericons\FeatherIconsAsset',
         'yii\web\JqueryAsset',       
         'yii\bootstrap5\BootstrapAsset' ,
         'yii\web\YiiAsset'       

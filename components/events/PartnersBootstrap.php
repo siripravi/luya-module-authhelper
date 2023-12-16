@@ -6,7 +6,7 @@ use albertgeeca\shop\Mailer;
 use yii\helpers\{Html, Url};
 use yii\base\{BootstrapInterface, Event};
 use app\entities\PartnerRequest;
-use app\components\user\models\Profile;
+use app\models\Profile;
 use app\controllers\PartnerRequestController;
 
 /**

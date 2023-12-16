@@ -5,8 +5,8 @@ use yii\widgets\ActiveForm;
 
 /**
  * @var \yii\web\View $this
- * @var \app\components\user\models\User $model
- * @var \app\components\user\models\Profile $profile
+ * @var \app\models\User $model
+ * @var \app\models\Profile $profile
  *
  */
 

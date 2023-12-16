@@ -1,7 +1,8 @@
 <?php
 namespace app\components\user\controllers;
-use app\modules\user\controllers\SecurityController as MainController;
+use Chandra\Yii2Account\controllers\SecurityController as MainController;
 use app\models\LoginForm;
+use app\modules\cart\models\Cart;
 use yii\helpers\Url;
 use yii\web\Response;
 
@@ -22,22 +23,29 @@ class SecurityController extends MainController
      */
     public function actionLogin()
     {
-        if (!\Yii::$app->user->isGuest) {
-            \Yii::$app->getResponse()->redirect(Url::to([\Yii::$app->getHomeUrl()]));
-        }
 
+       
+        $cart = Cart::getCart();
+        if (!\Yii::$app->user->isGuest) {
+           if(!empty($cart))
+                \Yii::$app->getResponse()->redirect(Url::to(['/cart/bag/index']));
+             else
+                \Yii::$app->getResponse()->redirect(Url::to([\Yii::$app->getHomeUrl()]));
+
+        }
+         $returnUrl =  \Yii::$app->request->referrer ;
         /** @var LoginForm $model */
         $model = \Yii::createObject(LoginForm::class);
         $event = $this->getFormEvent($model);
 
         $this->performAjaxValidation($model);
         $this->trigger(self::EVENT_BEFORE_LOGIN, $event);
-
+       
         if ($model->load(\Yii::$app->getRequest()->post()) && $model->login()) {
             $this->trigger(self::EVENT_AFTER_LOGIN, $event);
-
+           
             //Checking return url
-            if (!empty($model->returnUrl)) {
+         /*   if (!empty($model->returnUrl)) {
                 $host = \Yii::$app->request->hostInfo;
                 $returnUrlHost = substr($model->returnUrl, 0, strlen($host));
                 if ($returnUrlHost == $host) {
@@ -50,9 +58,10 @@ class SecurityController extends MainController
             else {
                 $returnUrl = Url::to([\Yii::$app->user->returnUrl]);
             }
+            */
 
             \Yii::$app->user->setReturnUrl($returnUrl);
-
+           
             return \Yii::$app->getResponse()->redirect($returnUrl);
         }
 
