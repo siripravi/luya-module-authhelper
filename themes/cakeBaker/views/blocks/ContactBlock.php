@@ -10,10 +10,10 @@
                     <div class="ms-4">
                         <p class="fs-5 fw-bold mb-0">Call Us</p>
                         <p class="fs-1 fw-bold mb-0">+012 345 6789</p>
+                        <p class="text-center">Layout:<?= $this->context->page->layout_file; ?></p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </div>

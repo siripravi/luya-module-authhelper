@@ -32,7 +32,7 @@ use yii\helpers\Url;
       <div class="col-md-8">
         <?= $content; ?>
       </div>
-      <div class="col-md-4">       
+      <div class="col-md-4">
         <p>
           <!--= $this->context->getBasketCount(); > item(s) -->
         </p>
@@ -73,3 +73,4 @@ use yii\helpers\Url;
       </div>
     </div>
   </div>
+</div>

@@ -81,7 +81,7 @@ $this->beginPage();
                 </div>
             </header>
         </div>
-        <div class="container">
+        <div class="container pt-5">
             <!--<ol>
                 <li><a href="<= Yii::$app->menu->home->link; ?>">Home</a></li>
                 <php foreach (Yii::$app->menu->current->teardown as $item) : ?>
@@ -89,9 +89,8 @@ $this->beginPage();
                 <php endforeach; ?>
             </ol>-->
 
-            <main>
                 <?= $content; ?>
-            </main>
+           
         </div>
         <div class="col-12 align-self-end">
             <?= OrderScheme::widget() ?>

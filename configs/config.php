@@ -95,12 +95,13 @@ $config = new Config('myproject', dirname(__DIR__), [
             'class' => 'yii\db\Connection',
             'charset' => 'utf8',
         ],
-        'request' => [
+         /* 'request' => [
+            
             'enableCookieValidation' => true,
             'cookieValidationKey' => 'I-mmzHGFYAx9EnbueCBRo4W4HQBKHA_-',
             'enableCsrfValidation' => false,
-        ],
-        'user' => [       // 'class'=>'',     
+        ],  */
+        'user' => [      'class'=>'yii\web\User',     
                 'identityClass' => app\models\User::class,
                 'enableAutoLogin' => true,
                 'identityCookie' => [
