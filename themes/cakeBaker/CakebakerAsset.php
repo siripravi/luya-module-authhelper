@@ -8,11 +8,13 @@ class CakebakerAsset extends Asset
     public $sourcePath = '@activeTheme/dist';
     public $css = [  
         'flaticon.css',
-        'bootstrap.min.css',    
-        'style.css'
+      //  'bootstrap.min.css',    
+      //  'style.css'
+        'css/main.css'
     ];
 
     public $js = [
+        'https://cdn.jsdelivr.net/gh/kmusiclife/lux.js@main/lux.min.js',
         'main.js',
     ];
     

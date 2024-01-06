@@ -5,6 +5,7 @@ return [
     'senderEmail' => 'noreply@example.com',
     'senderName' => 'Example.com mailer',
     'order_secret' => 'SiriPravi',
+   
     'user.avatar.size' => [200, 200],
     'phone1' => '',
     'phone1f' => '',

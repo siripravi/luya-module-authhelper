@@ -226,7 +226,7 @@ class BagController extends \luya\web\Controller
     public function actionAddress($id = null){
         if (!empty($id)) {
             $address = UserAddress::findOne($id);
-            if ($address->user_profile_id == \Yii::$app->user->identity->profile->id) {
+            if ($address->user_profile_id == \Yii::$app->user->identity->profile->id){
                 if ($address->load(\Yii::$app->request->post())) {
                     if ($address->validate()) {
                         $address->save();
@@ -241,18 +241,39 @@ class BagController extends \luya\web\Controller
             $address = new UserAddress();
             if ($address->load(\Yii::$app->request->post())) {
                 $address->user_profile_id = \Yii::$app->user->identity->profile->id;
+                
                 if ($address->validate()) {
                     $address->save();
                     return $this->redirect('addresses');
+                } else {
+                    print_r($address->errors);die;
                 }
             }
             return $this->renderLayout('customer_address',['address' => $address]);
         }
         
     }
+    public function actionAddresses()
+    {
+        $addresses = \Yii::$app->user->identity->profile->userAddresses;
+        return $this->renderLayout('addresses', [
+            'addresses' => $addresses
+        ]);
+    }
+
+    public function actionDeleteAddress($id)
+    {
+        if (!empty($id)) {
+            $address = UserAddress::findOne($id);
+            if ($address->user_profile_id == \Yii::$app->user->identity->profile->id) {
+                $address->delete();
+                return $this->redirect('addresses');
+            } else throw new ForbiddenHttpException('Such address does not exists or it is not your address.');
+        } else throw new ForbiddenHttpException('Id can not be empty.');
+    }
+
     public function actionCheckout(){
         return $this->renderLayout('checkout');
-
     }
      /**
      * @return int Calculate the number of basket items

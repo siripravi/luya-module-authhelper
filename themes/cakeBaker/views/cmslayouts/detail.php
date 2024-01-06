@@ -1,4 +1,8 @@
 <?php
+
+use arturoliveira\checkoutprogressbar\CheckOutProgressBar;
+use yii\helpers\Url;
+
 /**
  * @var string[] $placeholders
  */
@@ -7,14 +11,35 @@
 <div class="header-container">
     <?= $placeholders['banner'] ?>
 </div>
-<section id="xheader" class="xwrapper">
-    <!-- Intro -->
 
-</section>
+<?= CheckOutProgressBar::widget([
+    'current_step' => 2,
+    'current_step_done' => TRUE, # Optional if you want this step to be checked
+    'steps' => [
+        [
+            'label' => 1,
+            'title' => 'Your Cart',
+            'url' => Url::toRoute('/shopping-cart'), # Optional if you want the label and title to be clickable
+        ],
+        [
+            'label' => 2,
+            'title' => 'Delivery Details',
+            'url' => Url::toRoute('/checkout-delivery'), # Optional if you want the label and title to be clickable
+        ],
+        [
+            'label' => 3,
+            'title' => 'Payment Details',
+            'url' => Url::toRoute('/checkout-delivery'), # Optional if you want the label and title to be clickable
+        ]
+    ]
+]);
 
+?>
 <!-- Main -->
 <section id="main" class="wrapper">
-    <?= $placeholders['main'] ?>
+    <div class="container">
+        <?= $placeholders['main'] ?>
+    </div>
 </section>
 
 <?php if ($placeholders['related']) : ?>

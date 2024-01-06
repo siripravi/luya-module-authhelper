@@ -28,9 +28,10 @@ class CartWidget extends Widget
     public function run()
     {
         $cart = Cart::getCart();
-        $sum = 0;
+        $sum = 0; $count = 0;
         foreach ($cart as $i => $item) { 
             $sum += $item["qty"] * $item["price"];
+            $count += $item['qty'];
         }    
         //print_r($cart);
         $car = ArrayHelper::index($cart,'pid');
@@ -47,7 +48,7 @@ class CartWidget extends Widget
                     }
                     );
        
-        return $this->render("cart", ['cartUrl' => $this->urlCart, 'articles' => $items, 'cart' => $cart,'sum' => $sum]);
+        return $this->render("cart", ['cartUrl' => $this->urlCart, 'articles' => $items, 'cart' => $cart,'sum' => $sum,'count' => $count]);
      
     }
 }

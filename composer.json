@@ -17,11 +17,14 @@
         "voskobovich/yii2-linker-behavior": "^4.0",
         "arturoliveira/yii2-checkoutprogressbar": "*",
         "sinergi/browser-detector": "^6.1",
+        "beastbytes/yii2-wizard": "*",
         "yiisoft/yii2-authclient": "~2.2.0",
         "chandra/yii2-account":"@dev",
         "yiisoft/yii2-symfonymailer": "~2.0.3",
         "luyadev/luya-module-forms": "^1.8",
-        "basepodapps/yii2-feathericons": "^1.0.0"
+        "basepodapps/yii2-feathericons": "^1.0.0",
+        "tigrov/yii2-kendoui": "~1.0",
+        "luyadev/luya-module-userauth": "^1.1"
        
     },
     "require-dev": {

@@ -1,25 +1,41 @@
 <?php
-
 use luya\Config;
 $params = require __DIR__ . '/params.php';
 $config = new Config('myproject', dirname(__DIR__), [
     'siteTitle' => 'Cake Zone',
     'defaultRoute' => 'cms',
+   
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],  
    // 'bootstrap' => ['user'],
     'modules' => [
+        'forms' => [
+            'class' => 'luya\forms\Module',
+             // 'useAppViewPath' => true,
+             //'viewMap' => ['block/*' =>'@app/views/blocks/']
+           
+        ],
+        'userauthfrontend' => [
+            'class' => 'app\modules\userauth\frontend\Module',
+            'useAppViewPath' => false, // When enabled the views will be looked up in the @app/views folder, otherwise the views shipped with the module will be used.
+            'params' => [
+                'userauth_redirect_nav_id'  => 20,
+               // 'userauth_afterlogin_nav_id' => 21
+            ]
+        ],
+        'userauthadmin' => 'app\modules\userauth\admin\Module',
         'user' => [
             'class' => 'Chandra\Yii2Account\Module',
             'modelMap' => [
-                'RegistrationForm' => app\models\RegistrationForm::class,
-                'RecoveryForm' => app\models\RecoveryForm::class,
-                'LoginForm' => app\models\LoginForm::class,
-                'SettingsForm' => app\models\SettingsForm::class,
-                'Profile' => app\models\Profile::class,
-                'User' => app\models\User::class
+                'RegistrationForm' => app\modules\userauth\models\RegistrationForm::class,
+                'RecoveryForm' => app\modules\userauth\models\RecoveryForm::class,
+                'LoginForm' => app\modules\userauth\models\LoginForm::class,
+                'SettingsForm' => app\modules\userauth\models\SettingsForm::class,
+                'Profile' => app\modules\userauth\models\Profile::class,
+                'User' => app\modules\userauth\models\User::class,
+                
             ],
             'controllerMap' => [
                 'registration' => app\components\user\controllers\RegistrationController::class,
@@ -38,9 +54,7 @@ $config = new Config('myproject', dirname(__DIR__), [
            // 'as frontend' => app\modules\user\filters\FrontendFilter::class,
            // 'enableFlashMessages' => false
         ],
-        'forms' => [
-            'class' => 'luya\forms\Module',
-        ],
+      
         // Admin module for the `cms` module.
         'cmsadmin' => [
             'class' => 'luya\cms\admin\Module',
@@ -72,6 +86,10 @@ $config = new Config('myproject', dirname(__DIR__), [
         'cartadmin' => 'app\modules\cart\admin\Module',
     ],
     'components' => [
+        'forms' =>[
+            'class' => 'siripravi\catalog\Forms'
+        ],
+       
       /*  'urlManager' => [
            // 'class' => 'app\components\SiteUrlManager',           
             'enablePrettyUrl' => true,
@@ -122,10 +140,10 @@ $config = new Config('myproject', dirname(__DIR__), [
             'appendTimestamp' => true,
             'bundles' => [
                 'yii\bootstrap5\BootstrapPluginAsset' => [
-                  //  'js' => [],
-                ],
+                    'js' => ["https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"]
+                ],   
                 'yii\bootstrap5\BootstrapAsset' => [
-                    'css' => [],
+                    'css' =>[ "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"],
                 ],
                 /*'yii\web\JqueryAsset' => [
                     'sourcePath' => null,
@@ -163,9 +181,7 @@ $config = new Config('myproject', dirname(__DIR__), [
             'from' => 'test@luya.io',
             'fromName' => 'test@luya.io',
         ],
-        'view' => [
-           
-        ],
+        'view' => [ ],
         /*
          * The composition component handles your languages and they way your urls will look like. The composition components will
          * automatically add the language prefix  is defined in `default` to your url (the language part in the url  e.g. "yourdomain.com/en/homepage").

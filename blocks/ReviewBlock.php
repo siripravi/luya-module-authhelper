@@ -2,7 +2,6 @@
 
 namespace app\blocks;
 
-
 use luya\cms\base\PhpBlock;
 use luya\cms\frontend\blockgroups\ProjectGroup;
 use luya\cms\helpers\BlockHelper;
@@ -116,7 +115,6 @@ class ReviewBlock extends PhpBlock
 
     public function injectors()
     {
-
         return [
             'foobar' => new ActiveQueryCheckboxInjector([
                 'query' => Brand::find(), //->where(['id' => 1]),

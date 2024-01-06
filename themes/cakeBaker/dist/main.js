@@ -1,6 +1,52 @@
 (function ($) {
   "use strict";
   feather.replace();
+  var $body = $("body");
+  
+  /*  document.addEventListener("DOMContentLoaded", function() {
+      console.log(window.location.pathname);
+      // Check if this is the specific page where you want to open the offcanvas
+      var isSpecificPage = window.location.pathname === '/shopping-cart'; // Change '/your-specific-page' to your actual page path
+      var myOffcanvas = new bootstrap.Offcanvas(
+        document.getElementById("offcanvasCart")
+      );
+      if (isSpecificPage) {     
+        var offcanvasLink = document.getElementById("offcanvasCartBtn");       
+        offcanvasLink.click();
+      }
+      var closeOffcanvasBtn = document.getElementById('closeCartOffcanvas');
+            closeOffcanvasBtn.addEventListener('click', function() {
+                myOffcanvas.hide(); // Manually close the offcanvas
+            }); 
+});*/
+
+  // Function that shows and hides the sidebar cart
+  /* $(".cart-button, .close-button, #shopCart-curtain").click(function (e) {
+    e.preventDefault();
+
+    // Add the show-shopCart class to the body tag
+    $body.toggleClass("show-shopCart");
+
+    // Check if the sidebar curtain is visible
+    if ($("#shopCart-curtain").is(":visible")) {
+      // Hide the curtain
+      $("#shopCart-curtain").fadeOut(500);
+    } else {
+      // Show the curtain
+      $("#shopCart-curtain").fadeIn(500);
+    }
+  });*/
+  /*	
+const hamburger = document.getElementById('hamburger');
+const myOffcanvas = document.getElementById('offcanvasWithBothOptions')
+
+myOffcanvas.addEventListener('show.bs.offcanvas', event => {
+    hamburger.classList.add('active');
+});
+myOffcanvas.addEventListener('hide.bs.offcanvas', event => {
+    hamburger.classList.remove('active');
+});
+*/
   // Spinner
   var spinner = function () {
     setTimeout(function () {
@@ -73,7 +119,7 @@
   });
 
   /* Product Detail: Submit Button */
-  $("#cart-form").submit(function () {
+  /*$("#X-cart-form").submit(function () {
     var sbtn = $(".btn-buy");
     sbtn.html("Added to Cart");
     sbtn.prop("disabled", true);
@@ -89,30 +135,48 @@
       function () {}
     ).done(function () {
       openOffCanvas("/cart/bag/offcanvas");
+      console.log("opening offcanvas...");
       //reloadCart();
-      window.location = "/cart/bag/index";
+      //   window.location = "/shopping-cart";
       return false;
     });
-  });
+  });*/
+  /*
+  $("#btn-buy").click(function (e) {
+    e.preventDefault(); // avoid to execute the actual submit of the form.
+    var form = $(this).parent().parent().find("form");
+    var formid = $(this).attr('data-formid');
+    var actionUrl = $(this).attr('href'); //form.attr("action") + '&submit=' + formid; //
+    $.ajax({
+      type: "POST",
+      url: actionUrl,
+      data: form.serialize(),  //{'submit':formid}, // serializes the form's elements.
+      success: function (data) {
+        console.log(data); // show response from the php script.
+        openOffCanvas("/cart/bag/offcanvas");
+        console.log("opening offcanvas...");
+      },
+    });
+  });*/
   /*********************************/
 
   function calculate() {
+    var total = 0,
+      count = 0;
     $(".product").each(function () {
-      var total = 0,
-        count = 0;
       $(this)
-        .find(".product-count")
+        .find(".qty-input")
         .each(function () {
           var qty = $(this).val();
           var sum = $(this).val() * $(this).attr("data-price");
           total += sum;
-          count += qty;
+          count += parseFloat(qty);
 
           $(this).parents("li").find(".price").text(sum);
         });
-      //  $(".amount").html(total);
-      //  $(".count").html(count);
-      reloadCart();
+      $(".amount").html(total);
+      $(".count").html(count);
+      //   reloadCart();
     });
   }
 
@@ -136,17 +200,16 @@
       // }
     });
   }
-  $(".cart-items").on("click", ".plus-button, .minus-button", function (e) {
+  $(".cart-items").on("click", ".button-minus, .button-plus", function (e) {
     // Get quanitity input values
-
     var qty = $(this).parent().parent().find(".qty-input");
     var val = parseFloat(qty.val());
     var max = parseFloat(qty.attr("max"));
     var min = parseFloat(qty.attr("min"));
     var step = parseFloat(qty.attr("step"));
-    console.log("clicked",qty);
+    console.log("clicked", qty);
     // Check which button is clicked
-    if ($(this).is(".plus-button")) {
+    if ($(this).is(".button-plus")) {
       // Increase the value
       qty.val(val + step);
     } else {
@@ -161,20 +224,27 @@
       }
     }
     qty.trigger("change");
-    //  reloadCart();
+    // reloadCart();
   });
 
-  $(".product-count").change(function () {
+  $(".product-count").change(function (e) {
+    e.preventDefault();
     var $this = $(this);
-    var parent = $this.parent().parent();
+    var parent = $this.parent().parent().parent();
     //parent.find(".cart-item-check").prop("checked", "checked");
     var price = $this.attr("data-price");
     var quantity = $this.val();
     var total = price * quantity;
+    var a = $(this).attr("data-id");
+    var b = $(this).val();
     parent.find(".cart-item-total").html(total.toFixed(2));
-    recalculateCart();
+    $.get("/cart/bag/set", { id: a, count: b }, function () {
+      $('.product-count[data-id="' + a + '"]').val(b);
+      calculate();
+    });
+    //recalculateCart();
   });
-  $(".xx-cart-products").on("change", ".product-count", function (e) {
+  $(".2cart-items").on("change", ".product-count", function (e) {
     e.preventDefault();
 
     var a = $(this).attr("data-id");
@@ -182,19 +252,6 @@
     $.get("/cart/bag/set", { id: a, count: b }, function () {
       $('.product-count[data-id="' + a + '"]').val(b);
       calculate();
-    });
-  });
-  $(".cart-products").on("click", ".product-delete", function (e) {
-    e.preventDefault();
-    var id = $(this).attr("rel");
-    $.get("/cart/bag/del", { id: id }, function (data) {
-      if (data) {
-        $("#i" + id).fadeOut("normal", function () {
-          $(this).remove();
-          calculate();
-        });
-        reloadCart();
-      }
     });
   });
 
@@ -216,16 +273,22 @@
       .each(function (index) {
         var ntext = "";
         id += $(this).attr("id").replace("buy", "") + "+";
-        var newVal = parseFloat($(this).val());
-        ntext = $(this).attr("data-ftext");
+        var newVal = parseFloat($(this).val().split("_")[1]);
+        ntext = $(this).attr("data-ftext").replace(/\s/g, "-");
+        ntext += "_" + $(this).val();
         console.log(ntext);
+        console.log(newVal);
         price += newVal;
         ftext += " " + ntext;
       });
+
     $(".moneyCal").html(price);
-    $(".btn-buy").attr("data-key", id.slice(0, -1));
-    $(".btn-buy").attr("data-price", price);
-    $(".btn-buy").attr("data-ftext", ftext.trim());
+    //$(".btn-buy").attr("data-key", id.slice(0, -1));
+    //$(".btn-buy").attr("data-price", price);
+    $("#featuremodel-price").val(price);
+    $("#featuremodel-pid").val($("#ProductId").val());
+    $("#featuremodel-featuretext").val(ftext.trim().replace(/\s/g, "+"));
+    $(".btn-buy").attr("data-ftext", ftext.replace(/\s/g, "+").trim());
   }
   /********************************************************/
 
@@ -268,4 +331,21 @@
       });
     }
   }
+
+  $(".cart-items").on("click", ".product-delete", function (e) {
+    e.preventDefault();
+    //alert("clicked.."); ("#i" + id)
+    var id = $(this).attr("rel");
+    $.get("/cart/bag/del", { id: id }, function (data) {
+      if (data) {
+        $(this).find("i" + id)
+          .fadeOut("normal", function () {
+            alert("Fading...");
+            $(this).remove();
+            calculate();
+          });
+        reloadCart();
+      }
+    });
+  });
 })(jQuery);

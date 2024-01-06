@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use app\modules\cart\widgets\CartWidget;
-
+use app\modules\cart\widgets\CartIconWidget;
 use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
 
@@ -11,8 +11,8 @@ use yii\bootstrap5\Popover;
 ?>
 <?php
 $menuItems = []; //<iconify-icon icon="mdi:user-outline" style="color: #123;" width="20" rotate="0deg"></iconify-icon>
-
 ?>
+
 <!-- Navbar begins  -->
 <?php
 NavBar::begin([
@@ -20,9 +20,9 @@ NavBar::begin([
     'brandLabel'  => '<h1 class="text-primary display-6">Cake Zone</h1>',
     'brandUrl' => Yii::$app->homeUrl,
     'options' => [
-        'class' => 'navbar navbar-light bg-white navbar-expand-md',
-        // 'style'=>"background-color: #6ace32;"
-
+        'class' => 'navbar navbar-expand-lg bg-dark',
+        'data-bs-theme' => 'dark',
+       // 'style' => "background-color: #46141c;border-radius: 230px 100px;"
     ],
 ]);  ?>
 
@@ -56,7 +56,7 @@ if (Yii::$app->user->isGuest) {
     $userItems[] = [
         'label' =>  Html::tag(
             'span',
-            '<i class="fas fa-user fa-2x"></i>',
+            '<i class="" data-feather="user-check"></i>',
             ["class" => "d-inline-block", "tabindex" => "0", "data-bs-toggle" => "popover", "data-bs-trigger" => "hover focus", "data-bs-content" => "click to login!"]
         ),
         'encode' => false,
@@ -110,18 +110,26 @@ if (Yii::$app->user->isGuest) {
 }
 
 ?>
-<div class="col-auto me-auto">
-    <?= Nav::widget([
-        'options' => ['class' => "navbar-nav ms-auto mx-lg-auto py-0"],
-        'items' => $menuItems,
-    ]); ?>
+<!--<div class="col-auto me-auto"> -->
+<?= Nav::widget([
+    'options' => ['class' => "navbar-nav ms-auto mx-lg-auto py-0"],
+    'items' => $menuItems,
+]); ?>
+<!--</div>  -->
+<div class="col-lg-auto text-center text-lg-left header-item-holder d-inline-flex ps-4" id="right-nav">
+    <?= CartIconWidget::widget(); ?>
 </div>
-<div class="d-flex m-3 me-0">
-    <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
-    <a href="#" class="position-relative me-4 my-auto">
-        <i class="fa fa-shopping-bag fa-2x"></i>
+<div class="d-flex m-3 me-0" id="right-nav-x">
+    <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i data-feather="search" class="text-primary"></i></button>
+    <!-- <a class="cart-button" href="#">
+		<span class="bag-count">3</span>
+		<span class="bag-icon">Bag</span>
+		<span class="bag-label">View Bag</span>
+	</a> -->
+    <!--<a href="#" class="position-relative me-4 my-auto">
+        <i class="border border-secondary" data-feather="shopping-bag"></i>
         <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
-    </a>
+    </a> -->
     <?= Nav::widget([
         'options' => ['class' => "navbar-nav ms-auto mx-lg-auto py-0"],
         'items' => $userItems,

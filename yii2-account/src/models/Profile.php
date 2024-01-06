@@ -11,6 +11,7 @@
 
 namespace Chandra\Yii2Account\models;
 
+use luya\admin\ngrest\base\NgRestModel;
 use Chandra\Yii2Account\traits\ModuleTrait;
 use yii\db\ActiveRecord;
 
@@ -30,7 +31,7 @@ use yii\db\ActiveRecord;
  *
  * @author Dmitry Erofeev <dmeroff@gmail.com
  */
-class Profile extends ActiveRecord
+class Profile extends NgRestModel
 {
     use ModuleTrait;
     /** @var \dektrium\user\Module */
@@ -40,6 +41,11 @@ class Profile extends ActiveRecord
     public function init()
     {
         $this->module = \Yii::$app->getModule('user');
+    }
+
+    public static function ngRestApiEndpoint()
+    {
+        return 'api-userauth-profile';
     }
 
     /**

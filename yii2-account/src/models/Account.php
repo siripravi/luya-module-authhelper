@@ -16,6 +16,7 @@ use Chandra\Yii2Account\models\query\AccountQuery;
 use Chandra\Yii2Account\traits\ModuleTrait;
 use yii\authclient\ClientInterface as BaseClientInterface;
 use yii\db\ActiveRecord;
+use luya\admin\ngrest\base\NgRestModel;
 use yii\helpers\Json;
 use yii\helpers\Url;
 
@@ -35,12 +36,17 @@ use yii\helpers\Url;
  *
  * @author Dmitry Erofeev <dmeroff@gmail.com>
  */
-class Account extends ActiveRecord
+class Account extends NgRestModel
 {
     use ModuleTrait;
 
     /** @var */
     private $_data;
+
+    public static function ngRestApiEndpoint()
+    {
+        return 'api-userauth-social_account';
+    }
 
     /** @inheritdoc */
     public static function tableName()

@@ -4,7 +4,7 @@
 }
 /********** Template CSS **********/
 :root {
-    --primary: #E88F2A;
+    --primary: #e4a8ea;
     --secondary: #FAF3EB;
     --light: #FFFFFF;
     --dark: #2B2825;
@@ -19,6 +19,17 @@ body {
 .navbar-collapse{
   background-color:#fff;
 }
+
+.navbar .megamenu{ padding: 1rem; }
+
+/* ============ desktop view ============ */
+@media all and (min-width: 992px) {
+
+  .navbar .has-megamenu{position:static!important;}
+  .navbar .megamenu{left:0; right:0; width:100%; margin-top:0;  }
+
+}
+
 
 #shopCart .avatar-lg {
   height: 5rem;
@@ -402,37 +413,36 @@ body {
 
 
 /**** RADIO BUTTONS *****/
-.btn-outline-warning{
+
+.btn-outline-primary{
   color:#000;
 }
 
-.btn-check:checked+.btn-outline-warning{
+.btn-check:checked+.btn-outline-primary{
   color:#fff;
-  
-}
-.btn-check:checked+.btn-outline-warning i::before{
-  border: 3px solid #f2f2f6;
-  font-size:34px;
-}  
-/*.btn-check:checked+.btn-outline-primary, 
-.btn-check:active+.btn-outline-primary, 
-.btn-outline-primary:active, 
-.btn-outline-primary.active, 
-.btn-outline-primary.dropdown-toggle.show {
-    color: #000;
-    background-color: #FFF;
-    border: 5px solid #E88F2A;
-    
-}*/
-.btn-check:checked+.btn-outline-warning i::before{
-  content:"\F26B";
-  font-size:34px;
-  border: 3px solid #f2f2f6;
   border-radius:50px;
-  color:#100525;
+  border:2px solid #1d0e51;
+}
+/*.btn-check:checked+.btn-outline-primary i::before{
+  border: 3px solid #f2f2f6;
+  font-size:34px;
+}  */
+
+.btn-check:checked+.btn-outline-primary i::before,
+.btn-outline-primary:hover {
+
+  content:"\F26B";
+  font-size:22px;
+  border: 3px solid #f6f6f2;
+  border-radius:50px;
+  color:#f5f3fa;
+  background-color:#4dc0e3;
+}
+.btn-check:checked+.btn-outline-primary{
+color:#fff;
 }
 .btn-buy {
-  background: #00AE2E;
+ /* background: #00AE2E;*/
   width: 100%;
   font-size: 16px;
   height: 56px;

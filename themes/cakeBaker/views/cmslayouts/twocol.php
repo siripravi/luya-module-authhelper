@@ -4,9 +4,9 @@ use yii\helpers\Html;
 ?>
 <div class="row">
     <div class="col-12">
-        <div style="background-color:#BBD4FD">
+        <div style="background-color: #d7d281;">
             <div class="container">
-                <div class="row">
+                <!--<div class="row">
                     <div class="align-items-center pt-4">
                         <h1 class="text-center styled">Product Detail</h1>
                     </div>
@@ -24,7 +24,7 @@ use yii\helpers\Html;
                     <div class="col-md height-100 border-bottom">
                         <div class="text-center">One of three columns</div>
                     </div>
-                </div> 
+                </div> -->
                 <?php
                      if (isset($this->params['breadcrumbs'])) {
                                 echo Html::tag(

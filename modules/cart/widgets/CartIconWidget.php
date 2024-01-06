@@ -56,8 +56,8 @@ class CartIconWidget extends Widget
 
         $count = 0;
 
-        foreach ($cart as $i =>$c) {
-          //  $count += $c["qty"];
+        foreach ($cart as $i => $c) {
+            $count += $c["qty"];
         }
 
         /*  if ($count) {
@@ -65,7 +65,19 @@ class CartIconWidget extends Widget
         } else {
             return Html::tag('span', null, $options);
         }*/
-        return Html::tag("div", Html::a(
+      /*  return '<a id="offcanvasCartBtn" class="cart-button" href="#view-cart" title="You have items in cart" data-bs-toggle="offcanvas" tabindex="-1" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
+		<span class="bag-count">' . $count . '</span>
+		<span class="bag-icon">Bag</span>
+		<span class="bag-label">View Bag</span>
+	    </a>';*/
+
+        return '<a id="offcanvasCartBtn" class="cart-button" href="/shopping-cart" title="You have items in cart" data-xbs-toggle="offcanvas" tabindex="-1" data-xbs-target="#offcanvasCart" aria-controls="offcanvasCart">
+		<span class="bag-count">' . $count . '</span>
+		<span class="bag-icon">Bag</span>
+		<span class="bag-label">View Bag</span>
+	    </a>';
+
+        /*    return Html::tag("div", Html::a(
             Icon::showLayers(
                 [
                     ['name' => 'shopping-cart'],
@@ -79,12 +91,12 @@ class CartIconWidget extends Widget
             ),
             "#view-cart",
             $options
-        ), ["class" => "header-item"]);
+        ), ["class" => "header-item"]);*/
     }
 
     private function registerClientScript()
     {
-      /*  $url = Url::to(['/bag/icon']);
+        /*  $url = Url::to(['/bag/icon']);
         $js = <<<JS
         function reloadCartIcon() {
             $.get('{$url}', function(data) {

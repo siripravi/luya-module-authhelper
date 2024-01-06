@@ -21,7 +21,7 @@ use yii\db\ActiveRecord;
 use yii\web\Application as WebApplication;
 use yii\web\IdentityInterface;
 use yii\helpers\ArrayHelper;
-
+use luya\admin\ngrest\base\NgRestModel;
 use Chandra\Yii2Account\Finder;
 
 /**
@@ -56,7 +56,7 @@ use Chandra\Yii2Account\Finder;
  *
  * @author Dmitry Erofeev <dmeroff@gmail.com>
  */
-class User extends ActiveRecord implements IdentityInterface
+class User extends NgRestModel implements IdentityInterface
 {
     use ModuleTrait;
 
@@ -88,6 +88,10 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static $usernameRegexp = '/^[-a-zA-Z0-9_\.@]+$/';
 
+    public static function ngRestApiEndpoint()
+    {
+        return 'api-userauth-user';
+    }
     
     /**
      * @inheritdoc
@@ -230,7 +234,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /** @inheritdoc */
-    public function attributeLabels()
+  /*  public function attributeLabels()
     {
         return [
             'username'          => \Yii::t('user', 'Username'),
@@ -241,7 +245,7 @@ class User extends ActiveRecord implements IdentityInterface
             'created_at'        => \Yii::t('user', 'Registration time'),
             'confirmed_at'      => \Yii::t('user', 'Confirmation time'),
         ];
-    }
+    }*/
 
     /** @inheritdoc */
     public function behaviors()

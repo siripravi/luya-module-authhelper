@@ -1,93 +1,112 @@
-<?php if (!empty($cart)) {
-	$sum = 0;
-?>
-	<!-- Cart Page Start -->
-	<div class="row" id="shopCart">
-		<div class="cart-items">
-			<?php foreach ($cart as $i => $item) { ?>
-				<div class="card border shadow-none cart-item" id="i<?= $i ?>" rel="<?= $i ?>">
-					<div class="card-body">
-						<div class="d-flex align-items-start border-bottom pb-3">
-							<div class="me-4">
-								<?php if (!$articles[$item['pid']][1]) : ?>
-									<img src="https://www.bootdey.com/image/380x380/008B8B/000000" alt="" class="avatar-lg rounded">
-								<?php else : ?>
-									<img src="<?= $articles[$item['pid']][1] ?>" class="img-responsive img-rounded" />
-								<?php endif; ?>
-							</div>
-							<div class="flex-grow-1 align-self-center overflow-hidden">
-								<div>
-									<h5 class="text-truncate font-size-18"><a href="#" class="text-dark"><?= $articles[$item['pid']][0] ?></a></h5>
-									<p class="text-muted mb-0">
-										<i class="bx bxs-star text-warning"></i>
-										<i class="bx bxs-star text-warning"></i>
-										<i class="bx bxs-star text-warning"></i>
-										<i class="bx bxs-star text-warning"></i>
-										<i class="bx bxs-star-half text-warning"></i>
-									</p>
-									<p class="mb-0 mt-1">Color : <span class="fw-medium"><?= $item['ftext'];  ?></span></p>
-								</div>
-							</div>
-							<div class="flex-shrink-0 ms-2">
-								<ul class="list-inline mb-0 font-size-16">
-									<li class="list-inline-item">
-										<a href="#" class="text-muted px-1">
-											<i class="mdi mdi-trash-can-outline"></i>
-										</a>
-									</li>
-									<li class="list-inline-item">
-										<a href="#" class="text-muted px-1">
-											<i class="mdi mdi-heart-outline"></i>
-										</a>
-									</li>
-								</ul>
-							</div>
-						</div>
+<section class="my-5">
+    <div class="container">
+        <?php if (!empty($cart)) :
+            $sum = 0;
+        ?>
+            <div class="row" id="shopCart">
+                <!-- cart -->
+                <div class="col-lg-9">
+                    <div class="card border shadow-0 products cart-items">
+                        <div class="m-4">
+                            <h4 class="card-title mb-4">Your shopping cart</h4>
 
-						<div>
-							<div class="row">
-								<div class="col-md-4">
-									<div class="mt-3">
-										<p class="text-muted mb-2">Price</p>
-										<h5 class="mb-0 mt-2"><span class="text-muted me-2"><del class="font-size-16 fw-normal">$500</del></span>$450</h5>
-									</div>
-								</div>
-								<div class="col-md-5">
-									<div class="mt-3">
-										<p class="text-muted mb-2">Quantity</p>
-										<div class="input-group quantity mt-4" style="width: 100px;">
-											<div class="input-group-btn">
-												<button class="btn btn-sm btn-minus rounded-circle bg-light border minus-button">
-													<i class="fa fa-minus"></i>
-												</button>
-											</div>
-											<input type="text" class="qty-input product-count form-control form-control-sm text-center border-0" data-id="<?= $i; ?>" data-price="<?= $item['price']; ?>" step="1" min="1" max="1000" name="[]qty-input" value="<?= $item["qty"]; ?>" pattern="[0-9]*" title="Quantity" inputmode="numeric">
+                            <?php foreach ($cart as $i => $item) { ?>
+                                <div class="row gy-3 mb-4 product cart-item" id="i<?= $i ?>" rel="<?= $i ?>">
+                                    <div class="col-lg-5">
+                                        <div class="me-lg-5">
+                                            <div class="d-flex">
+                                                <?php if (!$articles[$item['pid']][1]) : ?>
+                                                    <img src="https://www.bootdey.com/image/380x380/008B8B/000000" alt="" class="border rounded me-3">
+                                                <?php else : ?>
+                                                    <img src="<?= $articles[$item['pid']][1] ?>" class="border rounded me-3" style="width: 96px; height: 96px;" />
+                                                <?php endif; ?>
+                                                <div class="">
+                                                    <a href="#" class="nav-link"><?= $articles[$item['pid']][0] ?></a>
+                                                    <p class="text-muted"><?= $item['ftext'];  ?></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-sm-6 col-6 d-flex flex-row flex-lg-column flex-xl-row text-nowrap">
+                                        <div class="d-flex justify-content-between">
+                                        <div class="input-group w-auto justify-content-end align-items-center">
+                                                <!--   <span class="qty input-group quantity w-24 justify-content-center align-items-center mb-0 border-opacity-75"> -->
+                                                <input type="button" value="-" class="btn btn-primary button-minus icon-sm mx-0">
+                                                <input type="number" step="1" max="10" class="qty-input product-count border-0 text-center  w-56 fs-4" data-id="<?= $i; ?>" data-price="<?= $item['price']; ?>" step="1" min="1" max="1000" name="[]qty-input" value="<?= $item["qty"]; ?>" pattern="[0-9]*" title="Quantity" inputmode="numeric">
+                                                <input type="button" value="+" class="btn btn-primary button-plus icon-sm">
+                                                <!-- </span>  -->
+                                            </div>                                           
+                                        </div>
+                                        <div class="col-lg-4 d-flex justify-content-center">
+                                                <text class="h4"><span class="moneySymbol">₹</span><span class="cart-item-total ps-2"><?= $item["price"] * $item["qty"]; ?></span></text> <br>
+                                                <!--<small class="text-muted text-nowrap"> $460.00 / per item </small> -->
+                                        </div>
+                                        <div class="col-lg-2 float-end">
+                                            <a href="#!" class="btn btn-light border px-2 icon-hover-primary"><i class="fas fa-heart fa-sm px-1 text-secondary"></i></a>
+                                            <!--<a href="#" class="btn btn-light border text-danger icon-hover-danger"> Remove</a> -->
+                                            <a class="btn btn-light border text-danger icon-hover-danger remove-button product-delete" rel="<?= $i ?>"><span class="remove-icon"><i class="bi bi-trash"></i></span></a>
+                                        </div>
+                                    </div>                              
+                                </div>
+                            <?php
+                                $sum += $item["qty"] * $item["price"];
+                            } ?>
+                        </div>
 
-											<div class="input-group-btn">
-												<button class="btn btn-sm btn-plus rounded-circle bg-light border plus-button">
-													<i class="fa fa-plus"></i>
-												</button>
-											</div>
+                        <div class="border-top pt-4 mx-4 mb-4">
+                            <p><i class="fas fa-truck text-muted fa-lg"></i> Free Delivery within 1-2 weeks</p>
+                            <p class="text-muted">
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                                aliquip
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- cart -->
+                <!-- summary -->
+                <div class="col-lg-3">
+                    <div class="card mb-3 border shadow-0">
+                        <div class="card-body">
+                            <form>
+                                <div class="form-group">
+                                    <label class="form-label">Have coupon?</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control border" name="" placeholder="Coupon code">
+                                        <button class="btn btn-light border">Apply</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card shadow-0 border">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <p class="mb-2">Total price:</p>
+                                <p class="mb-2">$329.00</p>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <p class="mb-2">Discount:</p>
+                                <p class="mb-2 text-success">-$60.00</p>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <p class="mb-2">TAX:</p>
+                                <p class="mb-2">$14.00</p>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between">
+                                <p class="mb-2">Total price:</p>
+                                <p class="mb-2 fw-bold">$283.00</p>
+                            </div>
 
-											<span class="cart-item-total"><?= $item["price"] * $item["qty"]; ?></span>
-
-										</div>
-										<div class="col-md-3">
-											<div class="mt-3">
-												<p class="text-muted mb-2">Total</p>
-												<h5>$900</h5>
-											</div>
-										</div>
-									</div>
-								</div>
-								<a class="remove-button product-delete" rel="<?= $i ?>"><span class="remove-icon">X</span></a>
-							</div>
-						</div>
-					</div>
-				</div>
-			<?php
-				$sum += $item["qty"] * $item["price"];
-			} ?>
-		</div>
-	</div>
-<?php }  ?>
+                            <div class="mt-3">
+                                <a href="#" class="btn btn-success w-100 shadow-0 mb-2"> Make Purchase </a>
+                                <a href="#" class="btn btn-light w-100 border mt-2"> Back to shop </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- summary -->
+            </div>
+        <?php endif; ?>
+    </div>
+</section>

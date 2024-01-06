@@ -30,7 +30,7 @@ use yii\helpers\Url;
  *
  * @author Dmitry Erofeev <dmeroff@gmail.com>
  */
-class Token extends ActiveRecord
+class Token extends NgRestModel
 {
     use ModuleTrait;
 

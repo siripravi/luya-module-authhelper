@@ -21,10 +21,11 @@ use yii\bootstrap5\Offcanvas;
 <?php Offcanvas::begin([
         'id' => $offCanvasId,
         'placement' => Offcanvas::PLACEMENT_END,
+        'closeButton' => ['id'=>'closeCartOffcanvas'],
         'title' => "Your Cart Items",
         'backdrop' => false,
         'scrolling' => true
     ]); ?> 
-       <?= app\modules\cart\widgets\CartWidget::widget();  ?>
+       <!--= app\modules\cart\widgets\CartWidget::widget();  ?-->
     <?php Offcanvas::end();
     ?>

@@ -57,6 +57,7 @@ class Modal extends Widget
                     function openOffCanvas(action = null, config = {}) {   
                         if (action === null) {    
                         } else {  
+                            console.log('CONF:',action);
                             $.getJSON(action, function(data){
                                 var myOffcanvas = document.getElementById('{$this->offCanvasId}');
                                 var bsOffcanvas = new bootstrap.Offcanvas(myOffcanvas);
@@ -77,17 +78,32 @@ class Modal extends Widget
                         }
                     }       
                     var myOffcanvas = document.getElementById('{$this->offCanvasId}');       
-                    $(document).on('click', '.btn-buy', function(e){
+                  /*  $(document).on('click', '.btn-buy', function(e){
                         e.stopPropagation();         
-                        var config = {               
-                            body: $(this).attr('data-modal-body'),
-                            footer: $(this).attr('data-modal-footer'),               
-                        };
-                        openOffCanvas("/cart/bag/offcanvas", config);
-                    });
+                        var form = $(this).parent().parent().find("form");
+                               // var formid = $(this).attr('data-formid');
+                                var actionUrl = $(this).attr('href'); //form.attr("action") + '&submit=' + formid; //
+                                $.ajax({
+                                    type: "POST",
+                                    url: actionUrl,
+                                    data: {'submit':formid}, // serializes the form's elements.form.serialize(),  //
+                                    success: function (data) {
+                                        var config = {               
+                                            body: $(this).attr('data-modal-body'),
+                                            footer: $(this).attr('data-modal-footer'),               
+                                        };
+                                    // console.log(data); // show response from the php script.
+                                        openOffCanvas("/cart/bag/offcanvas", config);
+                                        console.log("opening offcanvas...");
+                                    }
+                                });
+                      
+                        
+                    });*/
 
-                    $(document).on('click', '#{$this->offCanvasId} button[type="submit"]', function(){
+                 $(document).on('click', '#{$this->offCanvasId} button[type="submit"]', function(){
                         $('#{$this->offCanvasId} form').trigger('beforeSubmit');
+                        console.log('BEFORE...');
                     });
                     $(document).on('beforeSubmit', '#{$this->offCanvasId} form', function(){
                         var form = $(this);
@@ -95,9 +111,10 @@ class Modal extends Widget
                             offCanvasLoad($('#{$this->offCanvasId}'), data);
                         }, 'json');
                         return false;
-                    });
+                    });               
+                
         JS;
-        $view->registerJs($js);
+     //   $view->registerJs($js);
 
         Html::addCssClass($this->titleOptions, 'modal-title');
         Html::addCssClass($this->options, $this->offCanvasId);

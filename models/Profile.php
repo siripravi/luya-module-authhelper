@@ -1,9 +1,12 @@
 <?php
+
 namespace app\models;
+
 use app\models\User;
 use Chandra\Yii2Account\traits\ModuleTrait;
 use Yii;
 use Chandra\Yii2Account\models\Profile as BaseProfile;
+
 /**
  * This file overrides standart model of the Dektrium project Yii2-user.
  * @author Albert Gainutdinov <xalbert.einsteinx@gmail.com>
@@ -21,7 +24,6 @@ use Chandra\Yii2Account\models\Profile as BaseProfile;
  * @property UserAddress[] $userAddresses
  */
 
-
 class Profile extends BaseProfile
 {
     use ModuleTrait;
@@ -32,7 +34,6 @@ class Profile extends BaseProfile
     {
         $this->module = \Yii::$app->getModule('user');
     }
-
 
     /**
      * @inheritdoc
@@ -93,8 +94,8 @@ class Profile extends BaseProfile
      *
      * Gets current user name with surname as string.
      */
-    public function getUserNameWithSurname():string {
-
+    public function getUserNameWithSurname(): string
+    {
         $string = $this->name . ' ' . $this->surname;
         return $string;
     }
@@ -146,7 +147,6 @@ class Profile extends BaseProfile
         if ($dateTime === null) {
             $dateTime = new \DateTime();
         }
-
         return $dateTime->setTimezone($this->getTimeZone());
     }
 
