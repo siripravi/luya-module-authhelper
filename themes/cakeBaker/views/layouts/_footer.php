@@ -4,9 +4,10 @@
  * @var \luya\web\View $this
  */
 
-use app\modules\modal\Modal;
+//use app\modules\modal\Modal;
+use yii\bootstrap5\Modal;
 ?>
- <?= Modal::widget([]); ?>    
+ <!--= Modal::widget([]); -->    
 <!-- Footer Start -->
 <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5">
     <div class="container py-5">
@@ -103,7 +104,19 @@ use app\modules\modal\Modal;
 </div>
 <!-- Copyright End -->
 
+<?php
+Modal::begin([
+	"id" => "ajaxCrudModal",
+	"options" => [
+		'data-backdrop' => "static",
+		'data-keyboard' => "false",
+	],
+	"footer" => "", // always need it for jquery plugin
+]);
 
+Modal::end();
+
+?>
 <!--?= Modal::widget([]); ?-->
 <!-- Back to Top -->
 <a href="#" class="btn btn-primary border-inner py-3 fs-4 back-to-top"><i class="bi bi-arrow-up"></i></a>

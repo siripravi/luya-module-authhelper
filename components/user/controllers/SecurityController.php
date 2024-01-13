@@ -28,7 +28,7 @@ class SecurityController extends MainController
         $cart = Cart::getCart();
         if (!\Yii::$app->user->isGuest) {
            if(!empty($cart))
-                \Yii::$app->getResponse()->redirect(Url::to(['/cart/bag/index']));
+                \Yii::$app->getResponse()->redirect(Url::to(['/shopping-cart']));
              else
                 \Yii::$app->getResponse()->redirect(Url::to([\Yii::$app->getHomeUrl()]));
 

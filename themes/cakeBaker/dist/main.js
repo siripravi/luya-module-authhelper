@@ -2,7 +2,9 @@
   "use strict";
   feather.replace();
   var $body = $("body");
-  
+  //var $defAddrId = $(".addrSel").find("input[type='radio']:checked").val();
+
+  //console.log($defAddrId);
   /*  document.addEventListener("DOMContentLoaded", function() {
       console.log(window.location.pathname);
       // Check if this is the specific page where you want to open the offcanvas
@@ -175,6 +177,7 @@ myOffcanvas.addEventListener('hide.bs.offcanvas', event => {
           $(this).parents("li").find(".price").text(sum);
         });
       $(".amount").html(total);
+      $("#totPrice").html(total);
       $(".count").html(count);
       //   reloadCart();
     });
@@ -182,7 +185,7 @@ myOffcanvas.addEventListener('hide.bs.offcanvas', event => {
 
   function reloadCart() {
     $.get("/cart/bag/block", function (data) {
-      $("#shopCart").after(data).remove();
+      $("#cartItems").after(data).remove();
     });
   }
 
@@ -237,7 +240,7 @@ myOffcanvas.addEventListener('hide.bs.offcanvas', event => {
     var total = price * quantity;
     var a = $(this).attr("data-id");
     var b = $(this).val();
-    parent.find(".cart-item-total").html(total.toFixed(2));
+    parent.find(".cart-item-total").html(total);
     $.get("/cart/bag/set", { id: a, count: b }, function () {
       $('.product-count[data-id="' + a + '"]').val(b);
       calculate();
@@ -254,14 +257,12 @@ myOffcanvas.addEventListener('hide.bs.offcanvas', event => {
       calculate();
     });
   });
-
-  $(".featSel")
+  /*$(".addrSel")
     .find("input[type=radio]")
     .change(function () {
-      $(".btn-buy").prop("disabled", false);
-      $(".btn-buy").html("Buy This");
-      calcDefCart();
-    });
+      var $aid = $(this).val();
+      $.get("/checkout-delivery", { aid: $aid }, function () {});
+    });*/
 
   /*** Product Detail:Calculate Item Price upon Feature Selection ***/
   function calcDefCart() {
@@ -272,23 +273,30 @@ myOffcanvas.addEventListener('hide.bs.offcanvas', event => {
       .find("input[type='radio']:checked")
       .each(function (index) {
         var ntext = "";
-        id += $(this).attr("id").replace("buy", "") + "+";
-        var newVal = parseFloat($(this).val().split("_")[1]);
-        ntext = $(this).attr("data-ftext").replace(/\s/g, "-");
-        ntext += "_" + $(this).val();
+        //id += $(this).attr("id").replace("buy", "") + "+";
+        var newVal = $(this).attr("data-ftext").split("_")[1];
+        ntext = $(this).attr("data-ftext").split("_")[0].replace(/\s/g, "-");
+
+        console.log("PRICE: ", newVal.replace(/\D+$/g, ""));
+        ntext += "_" + $(this).val() + "_" + newVal.replace(/\D+/g, "");
         console.log(ntext);
-        console.log(newVal);
-        price += newVal;
-        ftext += " " + ntext;
+        price += parseFloat(newVal);
+        ftext += ntext + "+";
+        console.log(ftext);
       });
 
     $(".moneyCal").html(price);
     //$(".btn-buy").attr("data-key", id.slice(0, -1));
     //$(".btn-buy").attr("data-price", price);
-    $("#featuremodel-price").val(price);
-    $("#featuremodel-pid").val($("#ProductId").val());
-    $("#featuremodel-featuretext").val(ftext.trim().replace(/\s/g, "+"));
-    $(".btn-buy").attr("data-ftext", ftext.replace(/\s/g, "+").trim());
+    $("#articlefeaturemodel-price").val(price);
+    $("#articlefeaturemodel-pid").val($("#ProductId").val());
+    $("#articlefeaturemodel-featuretext").val(
+      ftext.trim().replace(/\s/g, "+").trim().slice(0, -1)
+    );
+    $(".btn-buy").attr(
+      "data-ftext",
+      ftext.replace(/\s/g, "+").trim().slice(0, -1)
+    );
   }
   /********************************************************/
 
@@ -332,13 +340,14 @@ myOffcanvas.addEventListener('hide.bs.offcanvas', event => {
     }
   }
 
-  $(".cart-items").on("click", ".product-delete", function (e) {
+  $("#shopCart").on("click", ".product-delete", function (e) {
     e.preventDefault();
     //alert("clicked.."); ("#i" + id)
     var id = $(this).attr("rel");
     $.get("/cart/bag/del", { id: id }, function (data) {
       if (data) {
-        $(this).find("i" + id)
+        $(this)
+          .find("i" + id)
           .fadeOut("normal", function () {
             alert("Fading...");
             $(this).remove();

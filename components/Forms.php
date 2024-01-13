@@ -1,6 +1,6 @@
 <?php
 
-namespace siripravi\catalog;
+namespace app\components;
 
 use luya\Exception;
 use luya\forms\models\Form;
@@ -15,7 +15,9 @@ use Yii;
 use yii\base\Component;
 use yii\base\Event;
 use yii\widgets\ActiveForm;
+use yii\widgets\Pjax;
 use luya\forms\Model;
+use luya\helpers\Json;
 
 /**
  * Forms Component
@@ -29,26 +31,28 @@ use luya\forms\Model;
 class Forms extends \luya\forms\Forms
 {
     const EVENT_AFTER_SAVE = 'afterSave';
+    //const EVENT_AFTER_VALID = 'afterValidate';
 
     /**
      * @var string The session variable name
      */
-    public $sessionFormDataName = '__formData';
+    public $sessionFormDataName = '';
 
     /**
      * @var string The Active Form class, for configurations options see {{$activeFormClassOptions}}.
      */
     public $activeFormClass = 'yii\widgets\ActiveForm';
-
+    public $pjaxFormClass = "yii\widgets\Pjax";
+    public $isPjax = false;
     /**
      * @var array A configuration array which will be passed to ActiveForm::begin($options). Example usage `['enableClientValidation' => false]`
      */
     public $activeFormClassOptions = [];
-
+    public $pjaxClassOptions = [];
     /**
      * @var array An array of options which will be passed to {{ Html::submitButton(..., $options)}} submit buttons.
      */
-    public $submitButtonsOptions = [];
+    public $submitButtonsOptions = ['class' => 'btn btn-success btn-buy px-2'];
 
     /**
      * @var array An array of options which will be passed to {{ Html::submitButton(..., $options)}} back buttons.
@@ -98,6 +102,8 @@ class Forms extends \luya\forms\Forms
      */
     private $_form;
 
+    private $_pjax;
+
     /**
      * @var Model
      */
@@ -114,7 +120,7 @@ class Forms extends \luya\forms\Forms
      * @param ActiveForm $form
      */
 
-    public function startForm(ActiveForm $form)
+    /*  public function startForm(ActiveForm $form)
     {
         $this->_form = $form;
         $this->_model = new FeatureModel();  //new Model();
@@ -129,14 +135,24 @@ class Forms extends \luya\forms\Forms
         //   $this->_model = new $model();  //new FeatureModel(); 
         //  echo "<pre>";  echo $model;
         //  print_r($this->_model->attributes); die;
-    }
+    }*/
     public function beginForm(ActiveForm $form, String $model = 'luya\forms\Model')
     {
         $this->_form = $form;
         $this->_model = new $model();
-        $this->sessionFormDataName = "__" . $model;
+        $this->sessionFormDataName = "__" . basename($model);
     }
 
+    public function beginPjaxForm(Pjax $pjax)
+    {
+        $this->_pjax= $pjax;
+       
+    }
+
+    public function getPjax()
+    {
+        return $this->_pjax;
+    }
     /**
      * Active Form Getter
      *
@@ -181,7 +197,34 @@ class Forms extends \luya\forms\Forms
      */
     public function loadModel()
     {
-        Yii::debug('load and validate model', __METHOD__);
+        $modelClass = basename(get_class($this->model));
+        /*if (Yii::$app->request->isAjax) {
+            $params = Yii::$app->request->getQueryParams();
+            if (!empty($params['aid'])) {
+                $this->model->Aid = $params['aid'];
+                Yii::debug('Address#:' . $this->model->Aid);
+                //   $this->isModelValidated = true;
+                if (method_exists($this->model, 'getAfterValidateEvent')) {
+                    $event = $this->model->getAfterValidateEvent($this->model);
+                    $this->model->trigger(get_class($this->model)::EVENT_AFTER_VALID, $event);
+                }
+                $this->isModelValidated = true;
+                $this->isModelLoaded = true;
+            }
+        }*/
+        if ($this->isModelValidated) {
+            return true;
+        }
+        /**TRIGGER BEFORE LOAD & VALIDATE EVENT : Chandra:1/11 **/
+        if (method_exists($this->model, 'getBeforeLoadAddressEvent')) {
+            $params = Yii::$app->request->getQueryParams();
+            $this->model->forNew = isset($params['new']) ?: false;
+            Yii::debug('before Model Load..' . $this->sessionFormDataName, __METHOD__);
+            $event = $this->model->getBeforeLoadAddressEvent($this->model);
+            $this->model->trigger(get_class($this->model)::EVENT_BEFORE_LOAD, $event);
+            Yii::debug($this->model->forNew);
+        }
+        Yii::debug('load and validate model' . $this->sessionFormDataName, __METHOD__);
         if ($this->isModelValidated) {
             return true;
         }
@@ -189,13 +232,24 @@ class Forms extends \luya\forms\Forms
         if (!Yii::$app->request->isPost || !$this->model) {
             return false;
         }
+        $postData = Yii::$app->request->post();
 
-        $this->isModelLoaded = $this->model->load(Yii::$app->request->post());
+        //$this->isModelLoaded = $this->model->load(Yii::$app->request->pos>t());
+        if (!$this->model->forNew) {  //(property_exists($this->model, 'keyField') && isset($postData[$modelClass][$this->model->keyField]) && ($postData[$modelClass][$this->model->keyField] > 0)){
+
+            $this->isModelLoaded =  $this->model->loadPostData($postData);
+        } else
+            $this->isModelLoaded = $this->model->load($postData);
 
         if ($this->isModelLoaded && $this->model->validate()) {
-            Yii::$app->session->set($this->sessionFormDataName, $this->model->attributes);
+            Yii::$app->session->set("__" . $modelClass, $this->model->attributes);
             Yii::debug('successfull loaded and validated model', __METHOD__);
             $this->isModelValidated = true;
+            /**TRIGGER AFTER LOAD & VALIDATE EVENT : Chandra:1/9 **/
+            if (method_exists($this->model, 'getAfterValidateEvent')) {
+                $event = $this->model->getAfterValidateEvent($this->model);
+                $this->model->trigger(get_class($this->model)::EVENT_AFTER_VALID, $event);
+            }
             return true;
         }
         return false;
@@ -208,6 +262,8 @@ class Forms extends \luya\forms\Forms
      */
     public function getFormData()
     {
+        $modelClass = basename(get_class($this->model));
+        $this->sessionFormDataName = "__" . $modelClass;
         return ArrayHelper::typeCast(Yii::$app->session->get($this->sessionFormDataName, []));
     }
 
@@ -314,17 +370,20 @@ class Forms extends \luya\forms\Forms
                 $mailer->viewPath = "@app/mail";
                 $view = 'form';
                 $mail =  Yii::$app->mailer
-                    ->compose(['html' => $view, 'text' => 'text/' . $view], 
-                       
-                       [ 'message' =>StringHelper::template(
-                            $this->defaultEmailTemplate,
-                            [
-                                'intro' => nl2br($submissionEmail->getIntro()),
-                                'outro' => nl2br($submissionEmail->getOutro()),
-                                'summary' => $submissionEmail->getSummaryHtml()
-                            ]
-                        )
-                    ])
+                    ->compose(
+                        ['html' => $view, 'text' => 'text/' . $view],
+
+                        [
+                            'message' => StringHelper::template(
+                                $this->defaultEmailTemplate,
+                                [
+                                    'intro' => nl2br($submissionEmail->getIntro()),
+                                    'outro' => nl2br($submissionEmail->getOutro()),
+                                    'summary' => $submissionEmail->getSummaryHtml()
+                                ]
+                            )
+                        ]
+                    )
                     ->setTo($submissionEmail->getRecipients())
                     ->setFrom('purnachandra.valluri@gmail.com')
                     ->setSubject($submissionEmail->getSubject())

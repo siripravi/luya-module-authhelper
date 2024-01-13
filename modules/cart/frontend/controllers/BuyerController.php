@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\cart\controllers;
+namespace app\modules\cart\frontend\controllers;
 
 use Yii;
 use app\modules\cart\models\Buyer;

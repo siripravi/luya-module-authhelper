@@ -1,9 +1,9 @@
 <?php
 
-namespace app\components\user\controllers;
+namespace app\modules\userauth\frontend\controllers;
 
-use app\models\Profile;
-use app\models\UserAddress;
+use app\modules\userauth\models\Profile;
+use app\modules\userauth\models\UserAddress;
 use Chandra\Yii2Account\controllers\SettingsController as BaseController;
 use yii\base\Exception;
 use yii\filters\AccessControl;
@@ -106,6 +106,7 @@ class SettingsController extends BaseController
             $address = UserAddress::findOne($id);
             if ($address->user_profile_id == \Yii::$app->user->identity->profile->id) {
                 $address->delete();
+              //  \Yii::$app->session->remove(\Yii::$app->forms->sessionFormDataName);
                 //return $this->redirect('addresses');
                 return $this->redirect(\Yii::$app->request->referrer);
             } else throw new ForbiddenHttpException('Such address does not exists or it is not your address.');
@@ -138,7 +139,6 @@ class SettingsController extends BaseController
             $this->trigger(self::EVENT_AFTER_PROFILE_UPDATE, $event);
             return $this->refresh();
         }
-
         return $this->render('profile', [
             'model' => $model,
         ]);

@@ -11,6 +11,13 @@ $config = new Config('myproject', dirname(__DIR__), [
     ],  
    // 'bootstrap' => ['user'],
     'modules' => [
+        'gridview' =>  [
+            'class' => \kartik\grid\Module::class,
+            'bsVersion' => '5.x', // or '3.x'
+            // 'downloadAction' => 'gridview/export/download',
+            // 'i18n' => [],
+            // 'exportEncryptSalt' => 'tG85vd1',
+        ]   ,    
         'forms' => [
             'class' => 'luya\forms\Module',
              // 'useAppViewPath' => true,
@@ -87,7 +94,7 @@ $config = new Config('myproject', dirname(__DIR__), [
     ],
     'components' => [
         'forms' =>[
-            'class' => 'siripravi\catalog\Forms'
+            'class' => 'app\components\Forms'
         ],
        
       /*  'urlManager' => [

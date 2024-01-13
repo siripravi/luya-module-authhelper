@@ -9,15 +9,15 @@ $count = $this->extraValue('elements')['count'];
 <section class="my-5">
     <div class="container">
         <?php if (!empty($cart)) :
-            $sum = 0;
+            $sum = 0; $discount = 50; $tax = 12;
         ?>
+         <h4 class="card-title mb-4">Your shopping cart</h4>
             <div class="row" id="shopCart">
                 <!-- cart -->
                 <div class="col-lg-9">
                     <div class="card border shadow-0 products cart-items">
-                        <div class="m-4">
-                            <h4 class="card-title mb-4">Your shopping cart</h4>
-                            <?php foreach ($cart as $i => $item) { ?>
+                        <div class="m-4" id="cartItems">                           
+                            <?php foreach ($cart as $i => $item) : ?>
                                 <div class="row gy-3 mb-4 product cart-item" id="i<?= $i ?>" rel="<?= $i ?>">
                                     <div class="col-lg-5">
                                         <div class="me-lg-5">
@@ -53,9 +53,8 @@ $count = $this->extraValue('elements')['count'];
                                         <a class="btn btn-light border text-danger icon-hover-danger remove-button product-delete" rel="<?= $i ?>"><span class="remove-icon"><i class="bi bi-trash"></i></span></a>
                                     </div>
                                 </div>
-                            <?php
-                                $sum += $item["qty"] * $item["price"];
-                            } ?>
+                            <?php     $sum += $item["qty"] * $item["price"];  ?>
+                            <?php endforeach; ?>
                         </div>
                         <div class="border-top pt-4 mx-4 mb-4">
                             <p><i class="fas fa-truck text-muted fa-lg"></i> Free Delivery within 1-2 weeks</p>
@@ -86,25 +85,25 @@ $count = $this->extraValue('elements')['count'];
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <p class="mb-2">Total price:</p>
-                                <p class="mb-2">$329.00</p>
+                                <p class="mb-2"><span class="moneySymbol">₹</span><span id="totPrice"><?= $sum; ?></span></p>
                             </div>
                             <div class="d-flex justify-content-between">
                                 <p class="mb-2">Discount:</p>
-                                <p class="mb-2 text-success">-$60.00</p>
+                                <p class="mb-2 text-success">-<span class="moneySymbol">₹</span><span id="disPrice"><?= $discount;?></span></p>
                             </div>
                             <div class="d-flex justify-content-between">
                                 <p class="mb-2">TAX:</p>
-                                <p class="mb-2">$14.00</p>
+                                <p class="mb-2"><span class="moneySymbol">₹</span><span id="taxPrice"><?= $tax; ?></span></p>
                             </div>
                             <hr>
                             <div class="d-flex justify-content-between">
                                 <p class="mb-2">Total price:</p>
-                                <p class="mb-2 fw-bold">$283.00</p>
+                                <p class="mb-2 fw-bold"><span class="moneySymbol">₹</span><span id="netPrice"><?= $sum - $tax - $discount; ?></span></p>
                             </div>
 
                             <div class="mt-3">
                                 <a href="/checkout-delivery" class="btn btn-success w-100 shadow-0 mb-2"> Make Purchase </a>
-                                <a href="#" class="btn btn-light w-100 border mt-2"> Back to shop </a>
+                                <a href="/" class="btn btn-light w-100 border mt-2"> Back to shop </a>
                             </div>
                         </div>
                     </div>

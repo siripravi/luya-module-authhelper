@@ -20,7 +20,7 @@ NavBar::begin([
     'brandLabel'  => '<h1 class="text-primary display-6">Cake Zone</h1>',
     'brandUrl' => Yii::$app->homeUrl,
     'options' => [
-        'class' => 'navbar navbar-expand-lg bg-dark',
+        'class' => 'navbar navbar-expand-lg',  // bg-dark',
         'data-bs-theme' => 'dark',
        // 'style' => "background-color: #46141c;border-radius: 230px 100px;"
     ],

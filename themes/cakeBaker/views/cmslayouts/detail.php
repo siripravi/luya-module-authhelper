@@ -9,10 +9,12 @@ use yii\helpers\Url;
 ?>
 <!-- Intro -->
 <div class="header-container">
-    <?= $placeholders['banner'] ?>
+    <div class="container">
+        <?= $placeholders['banner'] ?>
+    </div>
 </div>
 
-<?= CheckOutProgressBar::widget([
+<!--= CheckOutProgressBar::widget([
     'current_step' => 2,
     'current_step_done' => TRUE, # Optional if you want this step to be checked
     'steps' => [
@@ -34,9 +36,9 @@ use yii\helpers\Url;
     ]
 ]);
 
-?>
+?-->
 <!-- Main -->
-<section id="main" class="wrapper">
+<section id="main-detail" class="wrapper">
     <div class="container">
         <?= $placeholders['main'] ?>
     </div>
