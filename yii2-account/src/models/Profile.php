@@ -63,7 +63,7 @@ class Profile extends NgRestModel
      */
     public function getUser()
     {
-        return $this->hasOne(get_class(\Yii::createObject(User::className())), ['id' => 'user_id']);
+        return $this->hasOne(get_class(\Yii::createObject(User::class)), ['id' => 'user_id']);
     }
 
     /**
