@@ -25,6 +25,9 @@
         "basepodapps/yii2-feathericons": "^1.0.0",
         "tigrov/yii2-kendoui": "~1.0",
         "luyadev/luya-module-userauth": "^1.1",
+        "lav45/yii2-ajax-create": "0.2.*",
+        "hscstudio/yii2-cart": "*",
+        "omnilight/yii2-shopping-cart": "*",
         "biladina/yii2-ajaxcrud-bs4": "~3.0"
        
     },

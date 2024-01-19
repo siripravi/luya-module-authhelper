@@ -2,8 +2,8 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use app\modules\cart\widgets\CartWidget;
-use app\modules\cart\widgets\CartIconWidget;
+use app\modules\shopcart\widgets\CartWidget;
+use app\modules\shopcart\widgets\CartIconWidget;
 use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
 

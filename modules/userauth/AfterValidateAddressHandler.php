@@ -15,11 +15,11 @@ class AfterValidateAddressHandler
        \Yii::debug('Address Model: After validate...');
         $model = $event->model;
         $instance = new self();        
-        $id = $model->Aid;
+        $id = $model->Aid;  //echo $id; die;
         if (!empty($id)) {  //print_r($address->attributes);          
             $address = UserAddress::findOne($id);
             if ($address->user_profile_id == \Yii::$app->user->identity->profile->id) {
-                if ($instance->load($address, $model->attributes)) {
+                if ($instance->load($model, $address->attributes)) {
                  /*   if ($address->validate()) {
                         $address->save();
                       //  return $this->redirect(Url::toRoute('/user/settings/addresses'));
@@ -55,7 +55,7 @@ class AfterValidateAddressHandler
     }
 
     public function load(&$model, $data){
-      //  $model->id = $data['Aid'];
+        $model->id = $data['aid'];
         $model->contact_person = $data['Name'];
         $model->contact_mobile1 = $data['Mobile1'];
         $model->contact_mobile2 = $data['Mobile2'];

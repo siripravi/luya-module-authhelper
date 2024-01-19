@@ -1,9 +1,9 @@
 <?php
 
-namespace app\modules\userauth;
+namespace app\modules\shopcart;
 
 use luya\forms\models\Form;
-use app\modules\userauth\models\AddressModel;
+use app\modules\shopcart\models\OrderForm;
 use yii\base\Event;
 
 /**
@@ -20,7 +20,7 @@ use yii\base\Event;
  * 
  * @since 1.6.0
  */
-class BeforeLoadAddressEvent extends Event
+class BeforeLoadAOrderFormEvent extends Event
 {
     /**
      * @var SubmissionEmail
@@ -46,7 +46,7 @@ class BeforeLoadAddressEvent extends Event
     /**
      * @param Model $form
      */
-    public function setModel(AddressModel $model)   {
+    public function setModel(OrderForm $model)   {
         $this->_model= $model;
     }
 }

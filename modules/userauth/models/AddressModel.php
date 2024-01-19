@@ -3,7 +3,7 @@
 namespace app\modules\userauth\models;
 
 use luya\base\DynamicModel;
-use app\modules\cart\models\Cart;
+use app\modules\shopshopcart\models\Cart;
 use yii\helpers\ArrayHelper;
 use app\modules\userauth\models\UserAddress;
 use Yii;
@@ -31,7 +31,7 @@ class AddressModel extends \luya\forms\Model
     public $forNew = true;
     public $Addresses = [];
 
-    public $isPjax = true;
+    public $isPjax = false;
     public $pjaxOptions = ['id'=> 'cart-address'];
     public $activeFormClassOptions = ['id' => 'address-form'];
     public $redirectUrl = "/shopping-cart";
@@ -192,19 +192,19 @@ class AddressModel extends \luya\forms\Model
     public function loadPostData($data = [])
     {
         $attrs = [];
-        $post = $data['AddressModel'];
-        $aid = $post['Aid'];
+       // $post = $data['AddressModel'];
+        $aid = $data['Aid'];
        
         if ($aid > 0) {
             $attrs['Aid'] = $aid;
             $address = UserAddress::findOne($aid);
             if(!empty($address)){
-                    $attrs['Name'] = !empty($post['Name']) ? $post['Name']:$address->contact_person;
-                    $attrs['Mobile1'] = !empty($post['Mobile1']) ? $post['Mobile1']:$address->contact_mobile1;
-                    $attrs['Mobile2'] = !empty($post['Mobile2']) ? $post['Mobile2']:$address->contact_mobile2;
-                    $attrs['Address1'] = !empty($post['Address1']) ? $post['Address1'] :$address->house;
-                    $attrs['Address2'] = !empty($post['Address2']) ? $post['Address2'] :$address->apartment;                   
-                    $attrs['Pincode'] = !empty($post['Pincode']) ? $post['Pincode'] :$address->zipcode;                    
+                    $attrs['Name'] = !empty($data['Name']) ? $data['Name']:$address->contact_person;
+                    $attrs['Mobile1'] = !empty($data['Mobile1']) ? $data['Mobile1']:$address->contact_mobile1;
+                    $attrs['Mobile2'] = !empty($data['Mobile2']) ? $data['Mobile2']:$address->contact_mobile2;
+                    $attrs['Address1'] = !empty($data['Address1']) ? $data['Address1'] :$address->house;
+                    $attrs['Address2'] = !empty($data['Address2']) ? $data['Address2'] :$address->apartment;                   
+                    $attrs['Pincode'] = !empty($data['Pincode']) ? $data['Pincode'] :$address->zipcode;                    
                     $attrs['Addresses'][$aid] = self::renderAddress($address);
                
                 $this->setAttributes($attrs, false);
@@ -213,10 +213,7 @@ class AddressModel extends \luya\forms\Model
         //  $model->country = 'India';
         //  $model->city = 'Hyderabad';
         //   $model->region = 'Telangana';
-        //   $model->postoffice = '';
-    
-       
-      return true;
+        //   $model->postoffice = '';          
       
     }
 }

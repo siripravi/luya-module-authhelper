@@ -1,1 +1,1 @@
-<?= app\modules\cart\widgets\CartWidget::widget();  ?>
+<?= app\modules\shopcart\widgets\CartWidget::widget();  ?>

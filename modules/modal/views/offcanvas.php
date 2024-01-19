@@ -26,6 +26,6 @@ use yii\bootstrap5\Offcanvas;
         'backdrop' => false,
         'scrolling' => true
     ]); ?> 
-       <!--= app\modules\cart\widgets\CartWidget::widget();  ?-->
+       <!--= app\modules\shopcart\widgets\CartWidget::widget();  ?-->
     <?php Offcanvas::end();
     ?>

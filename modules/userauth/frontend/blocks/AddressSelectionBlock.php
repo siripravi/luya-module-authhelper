@@ -1,10 +1,7 @@
 <?php
-
 namespace app\modules\userauth\frontend\blocks;
-
 use luya\forms\FieldBlockTrait;
 use app\modules\userauth\models\AddressModel;
-
 use luya\helpers\ArrayHelper;
 use yii\helpers\Html;
 use luya\cms\helpers\Url;
@@ -30,11 +27,10 @@ class AddressSelectionBlock extends FormBlock
             //  'addressList' => $this->getAddressList()
         ];
     }
+
     /**
      * @inheritDoc
      */
-
-
     public function frontend()
     {
         \Yii::$app->forms->autoConfigureAttribute(
@@ -46,10 +42,9 @@ class AddressSelectionBlock extends FormBlock
         );
         $output = '';
 
-        $model = \Yii::$app->forms->model;
-       
+        $model = \Yii::$app->forms->model;        
         $selected = ArrayHelper::typeCast(\Yii::$app->session->get('__AddressModel', $model->attributes));
-        $model->Aid = ($selected['Aid']) ? $selected['Aid'] : '';
+       // $model->Aid = ($selected['Aid']) ? $selected['Aid'] : '';
         $output .= "<div class='addrSel'>";
         $output .= "<div class='d-flex flex-wrap align-content-start'>";
         $output .= "<div class='row'><p>".Html::a("New Address",['/checkout-delivery','new'=>'delivery'],[
@@ -60,31 +55,30 @@ class AddressSelectionBlock extends FormBlock
         $output .= "<p>" . $model->Aid . "</p>";
         $output .= \Yii::$app->forms->form->field(
             $model,
-            $this->getVarValue($this->varAttribute)
+            'Aid'  //$this->getVarValue($this->varAttribute)
         )
-            ->radioList(
+        ->radioList(
                 $model->Addresses,
                 [
-                    'item' => function ($index, $label, $name, $checked, $value) use ($model) {                                          
-                       
-                        $return = '<div class="card card-outline-primary p-2 flex-fill">';
-                        $return .= '<div class="card-body">';
-                        $return .= '<a href="#" class="card-link">Another link</a>';
-                        $return .= Html::a(
-                            '<span class="bi bi-trash"></span>',
-                            Url::toModuleRoute('userauthfrontend', ['userauthfrontend/settings/delete-address', 'id' => $value]),
-                            ['title' => 'Delete', 'class' => 'card-link pull-right pjax']
-                        );
+                    'item' => function ($index, $label, $name, $checked, $value) use ($model) {
+                                    $return = '<div class="card card-outline-primary p-2 flex-fill">';
+                                    $return .= '<div class="card-body">';
+                                    $return .= '<a href="#" class="card-link">Another link</a>';
+                                    $return .= Html::a(
+                                        '<span class="bi bi-trash"></span>',
+                                        Url::toModuleRoute('userauthfrontend', ['userauthfrontend/settings/delete-address', 'id' => $value]),
+                                        ['title' => 'Delete', 'class' => 'card-link pull-right pjax']
+                                    );
 
-                        $return .= '</div>';
-                        $return .= '<input type="radio" id="' . $name . $index . '" class="btn-check" data-ftext="' . $label . '" name="' . $name . '" value="' . $value . '" title="click" autocomplete="off" ' . $checked . '>';
-                        $return .= '<label class="btn btn-outline-primary" for="' . $name . $index . '">' . '<i class="bi bi-circle pe-2" style="font-size:20px;"></i><span class="text-muted">' . ucwords($label) . '</span></label>';
+                                    $return .= '</div>';
+                                    $return .= '<input type="radio" id="' . $name . $index . '" class="btn-check" data-ftext="' . $label . '" name="' . $name . '" value="' . $value . '" title="click" autocomplete="off" ' . $checked . '>';
+                                    $return .= '<label class="btn btn-outline-primary" for="' . $name . $index . '">' . '<i class="bi bi-circle pe-2" style="font-size:20px;"></i><span class="text-muted">' . ucwords($label) . '</span></label>';
 
-                        $return .= "</div>";
-                        return $return;
+                                    $return .= "</div>";
+                                    return $return;
                     }, 'class' => 'd-flex text-inline'
                 ],
-            )->label(false);
+        )->label(false);
         $output .=  "</div>";
         $output .=  "</div>";
         return $output;

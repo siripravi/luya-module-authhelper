@@ -2,7 +2,7 @@
 namespace app\components\user\controllers;
 use Chandra\Yii2Account\controllers\SecurityController as MainController;
 use app\models\LoginForm;
-use app\modules\cart\models\Cart;
+use app\modules\shopcart\models\Cart;
 use yii\helpers\Url;
 use yii\web\Response;
 

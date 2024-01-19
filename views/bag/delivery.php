@@ -1,9 +1,9 @@
 <?php
 /**
- * @var $model \dench\cart\models\Delivery
+ * @var $model \dench\shopshopcart\models\Delivery
  */
 
-use dench\cart\models\Delivery;
+use dench\shopshopcart\models\Delivery;
 
 echo $model->text;
 

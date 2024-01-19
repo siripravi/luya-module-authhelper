@@ -4,10 +4,10 @@ namespace app\controllers;
 
 use app\modules\cart\actions\DeliveryAction;
 use app\modules\cart\actions\PaymentAction;
-use app\modules\cart\models\Cart;
-use app\modules\cart\models\Order;
-use app\modules\cart\models\OrderForm;
-use app\modules\cart\widgets\CartWidget;
+use app\modules\shopshopcart\models\Cart;
+use app\modules\shopshopcart\models\Order;
+use app\modules\shopshopcart\models\OrderForm;
+use app\modules\shopcart\widgets\CartWidget;
 use app\helpers\ImageHelper;
 use app\modules\page\models\Page;
 use siripravi\models\Article;

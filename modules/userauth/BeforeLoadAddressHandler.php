@@ -25,7 +25,8 @@ class BeforeLoadAddressHandler
              \Yii::$app->session->remove(\Yii::$app->forms->sessionFormDataName);
         }
         else{
-         //     $model->Name = $model->Aid;
+            \Yii::debug('Sel Addr:#',$model->Aid);
+           //   $model->Name = $model->Aid;
          //     \Yii::$app->session->set(\Yii::$app->forms->sessionFormDataName, $model->attributes);
        
      //   print_r($model->Addresses); die;

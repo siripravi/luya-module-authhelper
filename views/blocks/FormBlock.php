@@ -11,14 +11,18 @@
  */
 
 use luya\helpers\Html;
+use yii\helpers\Url;
 use luya\helpers\StringHelper;
-use yii2ajaxcrud\ajaxcrud\CrudAsset;
+use lav45\widget\AjaxCreate;
 use yii\bootstrap5\Modal;
 ?>
 <?php
-CrudAsset::register($this);
-
-
+/*AjaxCreate::begin();
+echo Html::button('<span class="glyphicon glyphicon-plus"></span>', [
+    'data-href' => Url::toRoute(['create']),
+    'class' => 'btn btn-success',
+]);
+AjaxCreate::end();*/
 ?>
 <?php if (Yii::$app->session->getFlash('formDataSuccess')): ?>
     <?= $this->placeholderValue('success'); ?>

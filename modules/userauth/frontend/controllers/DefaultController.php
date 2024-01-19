@@ -8,7 +8,7 @@ use luya\cms\menu\QueryOperatorFieldInterface;
 use luya\helpers\Url;
 use app\modules\userauth\frontend\Module;
 use app\modules\userauth\models\LoginForm;
-use app\modules\cart\models\Cart;
+use app\modules\shopshopcart\models\Cart;
 
 use Yii;
 use yii\filters\HttpCache;

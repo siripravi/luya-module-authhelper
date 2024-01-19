@@ -257,12 +257,24 @@ myOffcanvas.addEventListener('hide.bs.offcanvas', event => {
       calculate();
     });
   });
-  /*$(".addrSel")
+  $(".addrSel")
     .find("input[type=radio]")
     .change(function () {
       var $aid = $(this).val();
-      $.get("/checkout-delivery", { aid: $aid }, function () {});
-    });*/
+      $("#addressmodel-aid").val($aid);  
+      alert($("#addressmodel-aid").val());
+      $.get(
+        "/cart/bag/add-address",
+        { aid: $aid },
+        function () {}
+      ).done(function () {
+       
+        window.location = "/shopping-cart";
+        return false;
+      });
+    });
+        //$.get("/checkout-delivery", { aid: $aid }, function () {});
+   
 
   /*** Product Detail:Calculate Item Price upon Feature Selection ***/
   function calcDefCart() {

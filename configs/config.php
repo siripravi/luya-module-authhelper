@@ -12,12 +12,8 @@ $config = new Config('myproject', dirname(__DIR__), [
    // 'bootstrap' => ['user'],
     'modules' => [
         'gridview' =>  [
-            'class' => \kartik\grid\Module::class,
-            'bsVersion' => '5.x', // or '3.x'
-            // 'downloadAction' => 'gridview/export/download',
-            // 'i18n' => [],
-            // 'exportEncryptSalt' => 'tG85vd1',
-        ]   ,    
+            'class' => '\kartik\grid\Module'
+        ]  ,
         'forms' => [
             'class' => 'luya\forms\Module',
              // 'useAppViewPath' => true,
@@ -89,13 +85,26 @@ $config = new Config('myproject', dirname(__DIR__), [
             'useAppViewPath' => true, // When enabled the views will be looked up in the @app/views folder, otherwise the views shipped with the module will be used.
         ],
         'galleryadmin' => 'luya\gallery\admin\Module',
-        'cart' => 'app\modules\cart\frontend\Module',
-        'cartadmin' => 'app\modules\cart\admin\Module',
+        'shopcart' => 'app\modules\shopcart\frontend\Module',
+        'shopcartadmin' => 'app\modules\shopcart\admin\Module',
     ],
     'components' => [
         'forms' =>[
             'class' => 'app\components\Forms'
         ],
+        'cart' => [
+            'class' => 'hscstudio\cart\Cart',
+			'storage' => [
+				'class' => 'hscstudio\cart\MultipleStorage',
+				'storages' => [
+					['class' => 'hscstudio\cart\SessionStorage'],
+					[
+						'class' => 'hscstudio\cart\DatabaseStorage',
+						'table' => 'cart',
+					],
+				],
+			]
+		],
        
       /*  'urlManager' => [
            // 'class' => 'app\components\SiteUrlManager',           
@@ -227,7 +236,11 @@ $config->component('db', [
     'username' => 'root',
     'password' => '',
 ])->env(Config::ENV_LOCAL);
-
+$config->webComponent('request',[            
+    'enableCookieValidation' => true,
+    'cookieValidationKey' => 'I-mmzHGFYAx9EnbueCBRo4W4HQBKHA_-',
+    'enableCsrfValidation' => false,
+])->env(Config::ENV_LOCAL);
 /*
 // docker mysql config
 $config->component('db', [
@@ -248,7 +261,7 @@ $config->component('db', [
 $config->component('cache', [
     'class' => 'yii\caching\FileCache'
 ])->env(Config::ENV_PROD);
-
+$config->bootstrap(['hscstudio\cart\CartBootstrap'])->env(Config::ENV_PROD);
 // debug and gii on local env
 $config->module('debug', [
     'class' => 'yii\debug\Module',
@@ -259,6 +272,6 @@ $config->module('gii', [
     'allowedIPs' => ['*'],
 ])->env(Config::ENV_LOCAL);
 
-$config->bootstrap(['debug', 'gii'])->env(Config::ENV_LOCAL);
+$config->bootstrap(['hscstudio\cart\CartBootstrap','debug', 'gii'])->env(Config::ENV_LOCAL);
 
 return $config;
