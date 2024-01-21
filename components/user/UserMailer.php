@@ -32,7 +32,7 @@ class UserMailer extends Component
     /** @var string */
     protected $recoverySubject;
 
-    /** @var \Chandra\Yii2Account\Module */
+    /** @var \siripravi\authhelper\Module */
     protected $module;
 
     /**

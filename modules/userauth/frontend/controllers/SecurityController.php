@@ -1,6 +1,6 @@
 <?php
 namespace app\modules\userauth\frontend\controllers;
-use Chandra\Yii2Account\controllers\SecurityController as MainController;
+use siripravi\authhelper\controllers\SecurityController as MainController;
 use app\models\LoginForm;
 use app\modules\shopcart\models\Cart;
 use yii\helpers\Url;

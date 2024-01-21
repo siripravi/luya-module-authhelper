@@ -19,7 +19,7 @@
         "sinergi/browser-detector": "^6.1",
         "beastbytes/yii2-wizard": "*",
         "yiisoft/yii2-authclient": "~2.2.0",
-        "chandra/yii2-account":"@dev",
+        "siripravi/userauth":"^1.0.0",
         "yiisoft/yii2-symfonymailer": "~2.0.3",
         "luyadev/luya-module-forms": "^1.8",
         "basepodapps/yii2-feathericons": "^1.0.0",
@@ -52,10 +52,7 @@
         {
             "type": "composer",
             "url": "https://asset-packagist.org"
-        },
-        {
-            "type": "path",
-            "url": "./yii2-account"
         }
+       
     ]
 }

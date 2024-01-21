@@ -32,7 +32,7 @@ $config = new Config('myproject', dirname(__DIR__), [
         ],
         'userauthadmin' => 'app\modules\userauth\admin\Module',
         'user' => [
-            'class' => 'Chandra\Yii2Account\Module',
+            'class' => 'siripravi\authhelper\Module',
             'modelMap' => [
                 'RegistrationForm' => app\modules\userauth\models\RegistrationForm::class,
                 'RecoveryForm' => app\modules\userauth\models\RecoveryForm::class,
