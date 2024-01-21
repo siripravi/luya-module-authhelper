@@ -1,15 +1,10 @@
 <?php
-
 namespace app\modules\userauth\frontend\controllers;
-
 use Chandra\Yii2Account\controllers\SecurityController as MainController;
-use luya\admin\models\Config;
 use luya\cms\menu\QueryOperatorFieldInterface;
 use luya\helpers\Url;
 use app\modules\userauth\frontend\Module;
 use app\modules\userauth\models\LoginForm;
-use app\modules\shopshopcart\models\Cart;
-
 use Yii;
 use yii\filters\HttpCache;
 
@@ -65,13 +60,13 @@ class DefaultController extends MainController
 
 
         /** @var LoginForm $model */
-        $model = \Yii::createObject(LoginForm::class);
+        $model = Yii::createObject(LoginForm::class);
         $event = $this->getFormEvent($model);
 
         $this->performAjaxValidation($model);
         $this->trigger(self::EVENT_BEFORE_LOGIN, $event);
 
-        if ($model->load(\Yii::$app->getRequest()->post()) && $model->login()) {
+        if ($model->load(Yii::$app->getRequest()->post()) && $model->login()) {
             $this->trigger(self::EVENT_AFTER_LOGIN, $event);
             //    \Yii::$app->user->setReturnUrl($returnUrl);
 
@@ -80,7 +75,7 @@ class DefaultController extends MainController
             return $this->redirect($this->getRedirectUrl($redir));
         }
 
-        return $this->render('index', [
+        return $this->renderAjax('index', [
             'model' => $model,  'module' => $this->module,
         ]);
     }

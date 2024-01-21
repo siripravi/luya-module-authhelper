@@ -31,7 +31,7 @@ class SettingsController extends BaseController
     }
     public function getViewPath()
     {
-        return \Yii::getAlias('@app/views/user/settings');
+        return \Yii::getAlias('@userauthfrontend/views/user/settings');
     }
     /** @inheritdoc */
     public function behaviors()

@@ -71,8 +71,8 @@ class AddressSelectionBlock extends FormBlock
                                     );
 
                                     $return .= '</div>';
-                                    $return .= '<input type="radio" id="' . $name . $index . '" class="btn-check" data-ftext="' . $label . '" name="' . $name . '" value="' . $value . '" title="click" autocomplete="off" ' . $checked . '>';
-                                    $return .= '<label class="btn btn-outline-primary" for="' . $name . $index . '">' . '<i class="bi bi-circle pe-2" style="font-size:20px;"></i><span class="text-muted">' . ucwords($label) . '</span></label>';
+                                    $return .= '<input type="radio" id="' . $name . $index . '" class="form-check-input" data-ftext="' . $label . '" name="' . $name . '" value="' . $value . '" title="click" autocomplete="off" ' . $checked . '>';
+                                    $return .= '<label class="form-check-label" for="' . $name . $index . '">' . '<span class="text-muted">' . ucwords($label) . '</span></label>';
 
                                     $return .= "</div>";
                                     return $return;

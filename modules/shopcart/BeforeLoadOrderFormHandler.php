@@ -17,10 +17,11 @@ class BeforeLoadOrderFormHandler
     public static function handleBeforeLoad(\app\modules\shopcart\BeforeLoadOrderFormEvent $event)
     {        
         $priceList = self::getArticlePrices();
+        //echo "<pre>"; print_r($priceList); die;
         $model = $event->model;
         $model->Pid = $priceList[0]['article_id'];
        $model->Image = \Yii::$app->storage->getImage($priceList[0]['image_id'])->applyFilter(\app\filters\ThumbFilter::identifier())->source;
-        $model->Name = $priceList[0]['name'];
+        $model->Name = $priceList[0]['pname'];
        $radList = []; 
         foreach ($priceList as $id => $feature) {
             switch ($feature['type']) {
@@ -96,6 +97,7 @@ class BeforeLoadOrderFormHandler
                 //  'DP',
             ],
         ]);
+        
         array_walk($pli, function (&$value, $key) use ($priceList,$aName,$imageId) {
             $fId = $value['id'];
 
@@ -105,7 +107,7 @@ class BeforeLoadOrderFormHandler
                     if (!empty($v)) {
                         $value['article_id'] = $priceList[$k]['article_id'];
                         $value['image_id'] = $imageId;
-                        $value['name'] = $aName;
+                        $value['pname'] = $aName;
                         $value['featureValues'][$fId][$k]['value_id'] = $priceList[$k]['value_id'];
                         $value['featureValues'][$fId][$k]['currency_id'] = $priceList[$k]['currency_id'];
                         $value['featureValues'][$fId][$k]['price'] = $priceList[$k]['price'];
@@ -120,6 +122,7 @@ class BeforeLoadOrderFormHandler
         /*echo "<pre>";
         print_r($pli);
         die;*/
+       
         return $pli;
     }
 

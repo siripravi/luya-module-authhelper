@@ -28,7 +28,8 @@
         "lav45/yii2-ajax-create": "0.2.*",
         "hscstudio/yii2-cart": "*",
         "omnilight/yii2-shopping-cart": "*",
-        "biladina/yii2-ajaxcrud-bs4": "~3.0"
+        "biladina/yii2-ajaxcrud-bs4": "~3.0",
+        "exocet/yii2-bootstrap-material-design": "^2.3"
        
     },
     "require-dev": {

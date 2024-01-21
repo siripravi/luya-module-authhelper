@@ -1,31 +1,33 @@
 <?php
+
 use luya\Config;
+
 $params = require __DIR__ . '/params.php';
 $config = new Config('myproject', dirname(__DIR__), [
     'siteTitle' => 'Cake Zone',
     'defaultRoute' => 'cms',
-   
+
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
-    ],  
-   // 'bootstrap' => ['user'],
+    ],
+    // 'bootstrap' => ['user'],
     'modules' => [
         'gridview' =>  [
             'class' => '\kartik\grid\Module'
-        ]  ,
+        ],
         'forms' => [
             'class' => 'luya\forms\Module',
-             // 'useAppViewPath' => true,
-             //'viewMap' => ['block/*' =>'@app/views/blocks/']
-           
+            // 'useAppViewPath' => true,
+            //'viewMap' => ['block/*' =>'@app/views/blocks/']
+
         ],
         'userauthfrontend' => [
             'class' => 'app\modules\userauth\frontend\Module',
             'useAppViewPath' => false, // When enabled the views will be looked up in the @app/views folder, otherwise the views shipped with the module will be used.
             'params' => [
                 'userauth_redirect_nav_id'  => 20,
-               // 'userauth_afterlogin_nav_id' => 21
+                //'userauth_afterlogin_nav_id' => 21
             ]
         ],
         'userauthadmin' => 'app\modules\userauth\admin\Module',
@@ -38,13 +40,13 @@ $config = new Config('myproject', dirname(__DIR__), [
                 'SettingsForm' => app\modules\userauth\models\SettingsForm::class,
                 'Profile' => app\modules\userauth\models\Profile::class,
                 'User' => app\modules\userauth\models\User::class,
-                
+
             ],
             'controllerMap' => [
-                'registration' => app\components\user\controllers\RegistrationController::class,
-                'settings' => app\components\user\controllers\SettingsController::class,
-                'security' => @app\components\user\controllers\SecurityController::class,
-                'recovery' => app\components\user\controllers\RecoveryController::class
+                'registration' => app\modules\userauth\frontend\controllers\RegistrationController::class,
+                'settings' => app\modules\userauth\frontend\controllers\SettingsController::class,
+                'security' => app\modules\userauth\frontend\controllers\SecurityController::class,
+                'recovery' => app\modules\userauth\frontend\controllers\RecoveryController::class
             ],
             'mailer' => [
                 'viewPath' => '@app/views/user/mail',
@@ -53,11 +55,11 @@ $config = new Config('myproject', dirname(__DIR__), [
                 'confirmationSubject'   => 'Confirmation subject',
                 'reconfirmationSubject' => 'Email change subject',
                 'recoverySubject'       => 'Recovery subject',
+            ],
+            // 'as frontend' => app\modules\user\filters\FrontendFilter::class,
+            // 'enableFlashMessages' => false
         ],
-           // 'as frontend' => app\modules\user\filters\FrontendFilter::class,
-           // 'enableFlashMessages' => false
-        ],
-      
+
         // Admin module for the `cms` module.
         'cmsadmin' => [
             'class' => 'luya\cms\admin\Module',
@@ -89,24 +91,24 @@ $config = new Config('myproject', dirname(__DIR__), [
         'shopcartadmin' => 'app\modules\shopcart\admin\Module',
     ],
     'components' => [
-        'forms' =>[
+        'forms' => [
             'class' => 'app\components\Forms'
         ],
         'cart' => [
             'class' => 'hscstudio\cart\Cart',
-			'storage' => [
-				'class' => 'hscstudio\cart\MultipleStorage',
-				'storages' => [
-					['class' => 'hscstudio\cart\SessionStorage'],
-					[
-						'class' => 'hscstudio\cart\DatabaseStorage',
-						'table' => 'cart',
-					],
-				],
-			]
-		],
-       
-      /*  'urlManager' => [
+            'storage' => [
+                'class' => 'hscstudio\cart\MultipleStorage',
+                'storages' => [
+                    ['class' => 'hscstudio\cart\SessionStorage'],
+                    [
+                        'class' => 'hscstudio\cart\DatabaseStorage',
+                        'table' => 'cart',
+                    ],
+                ],
+            ]
+        ],
+
+        /*  'urlManager' => [
            // 'class' => 'app\components\SiteUrlManager',           
             'enablePrettyUrl' => true,
             'showScriptName' => false,
@@ -124,43 +126,52 @@ $config = new Config('myproject', dirname(__DIR__), [
                 '<slug:[0-9a-z\-]+>.html' => 'site/page',               
 			],
         ],*/
-   
+
         'db' => [
             'class' => 'yii\db\Connection',
             'charset' => 'utf8',
         ],
-         /* 'request' => [
+        /* 'request' => [
             
             'enableCookieValidation' => true,
             'cookieValidationKey' => 'I-mmzHGFYAx9EnbueCBRo4W4HQBKHA_-',
             'enableCsrfValidation' => false,
         ],  */
-        'user' => [      'class'=>'yii\web\User',     
-                'identityClass' => app\models\User::class,
-                'enableAutoLogin' => true,
-                'identityCookie' => [
-                    'name'     => '_frontendIdentity',
-                    'path'     => '/',
-                    'httpOnly' => true,
-                ],
-              /*  'on afterLogin' => function() {
+        'user' => [
+            'class' => 'yii\web\User',
+            'identityClass' => app\models\User::class,
+            'enableAutoLogin' => true,
+            'identityCookie' => [
+                'name'     => '_frontendIdentity',
+                'path'     => '/',
+                'httpOnly' => true,
+            ],
+            /*  'on afterLogin' => function() {
                     if (Yii::$app->cart->saveToDataBase) Yii::$app->cart->transportSessionDataToDB();
                 },
                 'on afterConfirm' => function() {
                     if (Yii::$app->cart->saveToDataBase) Yii::$app->cart->transportSessionDataToDB();
                 },*/
-            ],
-           
-          'assetManager' => [
+        ],
+
+        'assetManager' => [
             'linkAssets' => true,
             'appendTimestamp' => true,
             'bundles' => [
+                'yii\bootstrap5\BootstrapAsset' => [
+                    'css' => []
+                 //   'class' => \exocet\bootstrap5md\BootstrapAsset::class,
+                ],
                 'yii\bootstrap5\BootstrapPluginAsset' => [
+                    'js' => []
+                  // 'class' => \exocet\bootstrap5md\BootstrapPluginAsset::class,
+                ],
+                /*!!   'yii\bootstrap5\BootstrapPluginAsset' => [
                     'js' => ["https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"]
                 ],   
                 'yii\bootstrap5\BootstrapAsset' => [
                     'css' =>[ "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"],
-                ],
+                ],  !!**/
                 /*'yii\web\JqueryAsset' => [
                     'sourcePath' => null,
                     'js' => [
@@ -173,7 +184,7 @@ $config = new Config('myproject', dirname(__DIR__), [
 
         'mailer' => [
             'class' => \yii\symfonymailer\Mailer::class,
-          /*  'transport' => [
+            /*  'transport' => [
                 'scheme' => 'smtps',
                 'host' => 'smtp.gmail.com',
                 'username' => 'provdigi@gmail.com',
@@ -184,7 +195,7 @@ $config = new Config('myproject', dirname(__DIR__), [
             'viewPath' => '@app/mail',
             // send all mails to a file by default.
             'useFileTransport' => true,
-           /* 'transport' => [
+            /* 'transport' => [
                 'dsn' => 'smtp://purnachandra.valluri@gmail.com:M1yMaker@smtp.gmail.com:465',
             ],*/
         ],
@@ -197,7 +208,7 @@ $config = new Config('myproject', dirname(__DIR__), [
             'from' => 'test@luya.io',
             'fromName' => 'test@luya.io',
         ],
-        'view' => [ ],
+        'view' => [],
         /*
          * The composition component handles your languages and they way your urls will look like. The composition components will
          * automatically add the language prefix  is defined in `default` to your url (the language part in the url  e.g. "yourdomain.com/en/homepage").
@@ -223,7 +234,7 @@ $config = new Config('myproject', dirname(__DIR__), [
     'params' => $params,
 ]);
 
-$config->callback(function() {
+$config->callback(function () {
     define('YII_DEBUG', true);
     define('YII_ENV', 'local');
 })->env(Config::ENV_LOCAL);
@@ -236,7 +247,7 @@ $config->component('db', [
     'username' => 'root',
     'password' => '',
 ])->env(Config::ENV_LOCAL);
-$config->webComponent('request',[            
+$config->webComponent('request', [
     'enableCookieValidation' => true,
     'cookieValidationKey' => 'I-mmzHGFYAx9EnbueCBRo4W4HQBKHA_-',
     'enableCsrfValidation' => false,
@@ -270,8 +281,17 @@ $config->module('debug', [
 $config->module('gii', [
     'class' => 'yii\gii\Module',
     'allowedIPs' => ['*'],
+    'generators' => [
+        'crud' => [
+            'class' => 'yii\gii\generators\crud\Generator',
+            'templates' => [
+                'material-bootstrap' => '@vendor/exocet/yii2-bootstrap-material-design/src/generators/crud',
+            ]
+        ],
+       
+    ]
 ])->env(Config::ENV_LOCAL);
 
-$config->bootstrap(['hscstudio\cart\CartBootstrap','debug', 'gii'])->env(Config::ENV_LOCAL);
+//$config->bootstrap(['hscstudio\cart\CartBootstrap', 'debug', 'gii'])->env(Config::ENV_LOCAL);
 
 return $config;

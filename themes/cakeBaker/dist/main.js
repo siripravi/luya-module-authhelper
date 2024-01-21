@@ -1,5 +1,24 @@
+document.addEventListener("DOMContentLoaded", (event) => {
+  console.log("DOM fully loaded and parsed");
+
+const basicAutocomplete = document.querySelector('#search-autocomplete');
+const data = ['One', 'Two', 'Three', 'Four', 'Five'];
+const dataFilter = (value) => {
+return data.filter((item) => {
+  return item.toLowerCase().startsWith(value.toLowerCase());
+});
+};
+
+new mdb.Autocomplete(basicAutocomplete, {
+filter: dataFilter
+});
+
+});
+
+
 (function ($) {
   "use strict";
+ 
   feather.replace();
   var $body = $("body");
   //var $defAddrId = $(".addrSel").find("input[type='radio']:checked").val();
@@ -370,3 +389,4 @@ myOffcanvas.addEventListener('hide.bs.offcanvas', event => {
     });
   });
 })(jQuery);
+

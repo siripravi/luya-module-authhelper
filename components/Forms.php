@@ -4,7 +4,8 @@ use luya\helpers\ArrayHelper;
 
 use Yii;
 
-use yii\widgets\ActiveForm;
+//use yii\widgets\ActiveForm;
+use exocet\bootstrap5md\widgets\ActiveForm;
 use yii\widgets\Pjax;
 use luya\forms\Model;
 
@@ -31,7 +32,7 @@ class Forms extends \luya\forms\Forms
     /**
      * @var string The Active Form class, for configurations options see {{$activeFormClassOptions}}.
      */
-    public $activeFormClass = 'yii\widgets\ActiveForm';
+    public $activeFormClass = 'exocet\bootstrap5md\widgets\ActiveForm'; //'yii\widgets\ActiveForm';
     public $pjaxFormClass = "yii\widgets\Pjax";
     public $isPjax = false;
     /**

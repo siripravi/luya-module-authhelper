@@ -6,7 +6,6 @@ use app\modules\shopcart\widgets\CartWidget;
 use app\modules\shopcart\widgets\CartIconWidget;
 use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
-
 use yii\bootstrap5\Popover;
 ?>
 <?php
@@ -22,7 +21,7 @@ NavBar::begin([
     'options' => [
         'class' => 'navbar navbar-expand-lg',  // bg-dark',
         'data-bs-theme' => 'dark',
-       // 'style' => "background-color: #46141c;border-radius: 230px 100px;"
+        // 'style' => "background-color: #46141c;border-radius: 230px 100px;"
     ],
 ]);  ?>
 

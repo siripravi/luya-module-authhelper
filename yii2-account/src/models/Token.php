@@ -13,6 +13,8 @@ namespace Chandra\Yii2Account\models;
 
 use Chandra\Yii2Account\models\query\TokenQuery;
 use Chandra\Yii2Account\traits\ModuleTrait;
+
+use luya\admin\ngrest\base\NgRestModel;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\helpers\Url;
@@ -39,6 +41,10 @@ class Token extends NgRestModel
     const TYPE_CONFIRM_NEW_EMAIL = 2;
     const TYPE_CONFIRM_OLD_EMAIL = 3;
 
+    public static function ngRestApiEndpoint()
+    {
+        return 'api-userauth-token';
+    }
     /**
      * @return \yii\db\ActiveQuery
      */
