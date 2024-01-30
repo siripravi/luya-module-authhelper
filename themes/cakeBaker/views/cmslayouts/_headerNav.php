@@ -121,16 +121,8 @@ if (Yii::$app->user->isGuest) {
     <?= CartIconWidget::widget(); ?>
 </div>
 <div class="d-flex m-3 me-0" id="right-nav-x">
-    <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i data-feather="search" class="text-primary"></i></button>
-    <!-- <a class="cart-button" href="#">
-		<span class="bag-count">3</span>
-		<span class="bag-icon">Bag</span>
-		<span class="bag-label">View Bag</span>
-	</a> -->
-    <!--<a href="#" class="position-relative me-4 my-auto">
-        <i class="border border-secondary" data-feather="shopping-bag"></i>
-        <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
-    </a> -->
+    <!--<button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i data-feather="search" class="text-primary"></i></button> -->
+    
     <?= Nav::widget([
         'options' => ['class' => "navbar-nav ms-auto mx-lg-auto py-0"],
         'items' => $userItems,

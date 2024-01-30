@@ -21,10 +21,11 @@ NavBar::begin([
     'brandUrl' => Yii::$app->homeUrl,
    // 'collapseOptions'=> ['style'=> 'display:none'],
     'options' => [
-        'class' => 'navbar navbar-expand-lg fixed-top navbar-scroll',  // bg-dark',  
+        'class' => ' navbar-light bg-white navbar-expand-lg py-0',  // bg-dark',  
        // 'data-bs-theme' => 'dark',
         'style' => "background-color: #46141c;"//border-radius: 230px 100px;"
     ],
+    'innerContainerOptions' => ['class'=>'container py-3 py-lg-0 px-lg-0']
 ]);?>
       <?= Nav::widget([
             'options' => ['class' => "navbar-nav me-auto mb-2 mb-lg-0"],
@@ -34,7 +35,7 @@ NavBar::begin([
             <?= CartIconWidget::widget(); ?>
         </div>
         <div class="d-flex m-3 me-0" id="right-nav-x">
-    <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i data-feather="search" class="text-primary"></i></button>
+    <!--<button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i data-feather="search" class="text-primary"></i></button>-->
     <?= Nav::widget([
         'options' => ['class' => "navbar-nav ms-auto mx-lg-auto py-0"],
         'items' => $userItems,

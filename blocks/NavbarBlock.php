@@ -1,7 +1,8 @@
 <?php
 
 namespace app\blocks;
-
+use yii\widgets\Menu;
+use siripravi\ecommerce\models\Group;
 use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
 use yii\helpers\Html;
@@ -116,7 +117,8 @@ class NavbarBlock extends PhpBlock
                 'linkOptions' => ['class' => 'dropdown-toggle', 'data-bs-auto-close' => 'outside', 'data-bs-toggle' => 'dropdown'],
                 // 'active' => in_array(Yii::$app->controller->id, ['category', 'product']),
                 'items' => [
-                   // $this->render("_mega")
+                    //$this->render("_mega")
+                    $this->getMegaMenu()
                 ]
             ],
             ['label' => Yii::t('app', 'Blog'), 'url' => ['/blog']
@@ -188,5 +190,30 @@ class NavbarBlock extends PhpBlock
             ];
         }
         return $userItems;
+    }
+
+    public function getMegaMenu(){
+        $categories = Group::getMain(); //!Yii::$app->cache->exists('_categories-' . Yii::$app->language) ? Category::getMain() : [];
+        $items = [];
+        foreach ($categories as $category) {
+          $items[$category->id] = [
+            'label' => $category->name,
+            'url' => (count($category->categories)) ? ['/menu/'.$category->slug] : ['/menu/'.$category->slug],
+            'options' => [
+              'tag' => false,
+            ],
+          ];
+        }
+        return Menu::widget([
+          'items' => $items,
+          'linkTemplate' => '<a class="list-group-item" href="{url}">{label}</a>',
+          'itemOptions' => ['class' => 'list-group-item'],
+          'options' => [
+            'tag' => 'div',
+            //'class' => 'dropdown-menu rounded-0 w-100',
+            'class' => 'list-group',
+            // 'aria-labelledby' => "dropdownButton"
+          ],
+        ]);
     }
 }

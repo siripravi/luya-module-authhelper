@@ -4,7 +4,7 @@ use yii\widgets\Menu;
 use siripravi\ecommerce\models\Group;
 ?>
 
-<div class="mega-content px-4" data-bs-theme="dark">
+<div class="mega-content px-4" data-bs-theme="light">
   <div class="container-fluid">
     <div class="row">
       <div class="col-12 col-sm-4 col-md-3 py-4">

@@ -8,8 +8,10 @@ class CakebakerAsset extends Asset
     public $sourcePath = '@activeTheme/dist';
     public $css = [ 
        // 'css/mdb.min.css',   
-        'css/main.css' ,
+      //!  'css/main.css' ,
      //   'plugins/css/ecommerce-gallery.min.css'
+       'css/style.pink.css',
+       'css/custom.css'
 
     ];
 

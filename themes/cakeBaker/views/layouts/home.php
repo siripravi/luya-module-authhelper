@@ -1,4 +1,5 @@
 <?php
+
 use luya\admin\ngrest\aw\CallbackFormWidget;
 use app\widgets\OrderScheme;
 
@@ -28,49 +29,48 @@ $this->beginPage();
 
   <!-- Icon Font Stylesheet -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+  
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
   <?php $this->head() ?>
   <style>
-    body {
+    /*body {
       overflow-x: hidden;
-    padding: 0px;
-    min-width: 700px;
-    max-width: 1280px;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    font: normal normal 12px "Trebuchet MS", Arial, Tahoma, sans-serif;
-    }
+      padding: 0px;
+      min-width: 700px;
+      max-width: 1280px;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+      font: normal normal 12px "Trebuchet MS", Arial, Tahoma, sans-serif;
+    }*/
+
     .carousel-inner {
-  position: relative;
-  width: 100%;
-}
-#home-slider .carousel-caption{
-  position: absolute;
-  margin: 0;
-  color: white;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  }
+      position: relative;
+      width: 100%;
+    }
+
+    #home-slider .carousel-caption {
+      position: absolute;
+      margin: 0;
+      color: white;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
   </style>
 </head>
 
-<body data-bs-theme="dark">
+<body data-bs-theme="light">
   <?php $this->beginBody() ?>
- 
+  <div class="wide" id="all">
+  <!-- Top bar-->
+  <?= $this->render('_topBar'); ?>
+  <!-- Top bar end-->
   <?= $content; ?>
-  <?php
-
-
-/* @var $this \luya\admin\ngrest\base\ActiveWindowView */
-/* @var $this \luya\admin\ngrest\aw\CallbackFormWidget */ 
-
-?>
-
-  <?= $this->render('_footer'); ?>
   
+  <?= $this->render('_footer'); ?>
+  </div>
   <?php $this->endBody() ?>
   
 </body>
