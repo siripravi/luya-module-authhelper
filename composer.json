@@ -1,5 +1,5 @@
 {
-    "name": "siripravi/authhelper",
+    "name": "siripravi/luya-module-authhelper",
     "description": "Luya helper module for user authentication ",
     "type": "yii2-extension",
     "minimum-stability": "dev",   
